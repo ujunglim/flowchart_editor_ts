@@ -129,6 +129,9 @@ export default function GraphInitialize(graph) {
         target
       });
     }
+    else if(node.id === "delete") {
+      console.log("clicked delete");
+    }
   });
 
   let deleteNode = null;
@@ -139,9 +142,8 @@ export default function GraphInitialize(graph) {
     console.log("enter: ", node.id);
     if (node.id === "empty" || node.id === "delete") {
       deleteNode.show(); // deleteNode = graph.addNode(deleteSetting);
-      // bind
-      deleteNode.setParent(emptyNode);
-      emptyNode.setChildren([deleteNode]);
+      // bind 
+      emptyNode.addChild(deleteNode);
       // node.addTools([
       //   {
       //     name: "button-remove",
