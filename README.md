@@ -11,4 +11,6 @@ npm i styled-components
 
 npm i antd
 npm i @ant-design/icons
+
+npm i gh-pages
 ```

@@ -61,7 +61,8 @@ export default function StencilComp({ graphRef, stencilRef }) {
               
               // empty Node 跟 dropping Node一样大小
               node.fit();
-              
+              const fitEvent = new Event('fit');
+              dispatchEvent(fitEvent);
               
               return true;
             }

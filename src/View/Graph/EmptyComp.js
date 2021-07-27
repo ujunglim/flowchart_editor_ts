@@ -1,10 +1,17 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 export default function EmptyComp({onDelete}) {
+  const emptyRef = useRef();
   const deleteRef = useRef();
+
+  useEffect(() => {
+    emptyRef.current.addEventListener('fit', () => {
+      emptyRef.current.style.border = "none"
+    })
+  }, []);
 
   const onMouseEnter = () => {
     // console.log("enter");
@@ -17,7 +24,7 @@ export default function EmptyComp({onDelete}) {
   }
 
   return (
-    <Empty> 
+    <Empty ref={emptyRef}> 
       <EmptyText onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         请将左侧服务或关系拖入框内
         <DeleteBTN onClick={onDelete} ref={deleteRef} icon={<DeleteOutlined />}/>
