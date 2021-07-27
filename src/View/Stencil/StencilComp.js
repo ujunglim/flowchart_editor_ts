@@ -44,42 +44,42 @@ export default function StencilComp({ graphRef, stencilRef }) {
       ],
       validateNode(droppingNode, options) {
         const graph = graphRef.current
-        for( let n of graph.getNodes()) {
-          if(n.id === 'empty'){
-            const b1 = droppingNode.getBBox();
-            const b2 = n.getBBox();
-            if(b1.isIntersectWithRect(b2)){
+        for( let node of graph.getNodes()) {
+          if(node.id === 'empty'){
+            const dropBBox = droppingNode.getBBox();
+            const emptyBBox = node.getBBox();
+
+            if(dropBBox.isIntersectWithRect(emptyBBox)){
+              // 剧中
+              const {x: emptyX, y: emptyY} = node.position();
+              const {width: emptyW} = node.size();
+              const {width: dropW, height: dropH} = droppingNode.size();
+              droppingNode.position(emptyX + (emptyW - dropW)/2, emptyY);
+
+              //绑定 父子
+              droppingNode.setParent(node);
+              node.setChildren([droppingNode]);
+
+              // empty Node 跟 dropping Node一样大小
+              node.size(dropW, dropH);
+              node.position(emptyX + (emptyW - dropW)/2, emptyY);
+              
               return true;
             }
           }
         }
         return false;
-        // const { width, height } = droppingNode.getProp("size");
-        // const dropBBox = droppingNode.getBBox();
 
-        // const b = bound.current;
-        // for (let i = 0; i < b.length; i++) {
-        //   const boundNode = b[i];
-        //   const boundBBox = boundNode.getBBox();
+        //====================================================================
+        // 居中
+        // const { x: boundX, y: boundY } = boundNode.position();
+        // const { width: boundW, height: boundH } = boundNode.size();
+        // droppingNode.position(
+        //   boundX + (boundW - width) / 2,
+        //   boundY + (boundH - height) / 2
+        // );
 
-        //   // drop box inside of bound
-        //   if (dropBBox.isIntersectWithRect(boundBBox)) {
-        //     // 绑定 父子
-        //     droppingNode.setParent(boundNode);
-        //     boundNode.setChildren([droppingNode]);
-        //     // 居中
-        //     const { x: boundX, y: boundY } = boundNode.position();
-        //     const { width: boundW, height: boundH } = boundNode.size();
-        //     droppingNode.position(
-        //       boundX + (boundW - width) / 2,
-        //       boundY + (boundH - height) / 2
-        //     );
-        //     // bound invisible
-        //     // boundNode.hide();
-        //     return true;
-        //   }
-        // }
-        // return false;
+        //====================================================================
 
       }
     });
