@@ -1,6 +1,4 @@
-import styled from "styled-components";
-import { DeleteOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import EmptyNode from './EmptyNode';
 
 // setting of initial nodes(开始，结束，+)
 const nodeSetting = {
@@ -54,30 +52,6 @@ export default function GraphInitialize(graph) {
     }
   });
 
-//=========================== when click plus it shows up ================================
-  const emptySetting = {
-    shape: "react-shape", //*  !!!!  *//
-    component: <Empty> <EmptyText 
-    i
-    onMouseEnter={() => {
-      console.log("enter");
-      const deleteBTNDOM = document.querySelector("#delete_btn");
-      deleteBTNDOM.style.opacity = 1;
-
-    }}
-    onMouseLeave={() => {
-      console.log("leave")
-      const deleteBTNDOM = document.querySelector("#delete_btn");
-      deleteBTNDOM.style.opacity = 0;
-
-    }}>请将左侧服务或关系拖入框内<DeleteBTN id="delete_btn" icon={<DeleteOutlined />}/></EmptyText></Empty>,
-    x: 275,
-    y: 125,
-    width: 200,
-    height: 70,
-    id: "empty",
-  };
-
 //========================= Edges ===============================
   const edgeAttrs = {
     attrs: {
@@ -95,12 +69,16 @@ export default function GraphInitialize(graph) {
     target
   });
 
-  let emptyNode = null;
+  // delete empty node
+  const onDelete = () => {
+    console.log("delete empty node");
+  }
+
   graph.on("node:click", ({ node }) => {
     // click plus
     if (node.id === "plus") {
       // add emptyNode
-      emptyNode = graph.addNode(emptySetting);
+      const emptyNode = graph.addNode(new EmptyNode(onDelete));
       target.translate(undefined, 100);
       // plus is invisible
       plusNode.hide();
@@ -122,45 +100,3 @@ export default function GraphInitialize(graph) {
     }
   });
 }
-
-//============ Styled Component ===============
-const Empty = styled.div`
-  width: 100%;
-  height: 100%;
-  border: 2px dashed grey;
-  font-size: small;
-  color: grey;
-`;
-
-const EmptyText = styled.div`
-  /* border: 3px dashed purple; */
-  width: 130%;  /*  140%  */
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transform: translateX(-13%);
-`;
-
-const DeleteBTN = styled(Button)`
-  position: absolute;
-  right: 0%;
-  transform: translateX(15px);
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 100ms all ease-in-out;
-  opacity: 0;
-  border: 1px solid lightgrey;
-  background-color: white;
-  cursor: pointer;
-
-  &:hover {
-    color: #1890FF;
-    border-color: #1890FF;
-  }
-`;
