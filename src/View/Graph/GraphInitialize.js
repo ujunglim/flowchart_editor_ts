@@ -65,21 +65,33 @@ export default function GraphInitialize(graph) {
   //     }
   //   }
   // };
+//==============================================================
+  const deleteBTNDOM = document.querySelector("#delete_btn");
 
   const emptySetting = {
     shape: "react-shape", //*  !!!!  *//
-    component: <Empty>请将左侧服务或关系拖入框内</Empty>,
+    component: <Empty> <EmptyText 
+    onMouseEnter={() => {
+      console.log("enter");
+      // deleteBTNDOM.style.opacity = "0.5";
+
+    }}
+    onMouseLeave={() => {
+      console.log("leave")
+
+    }}>请将左侧服务或关系拖入框内<DeleteBTN id="delete_btn">🧺</DeleteBTN></EmptyText></Empty>,
     x: 270,
     y: 130,
-    width: 230,
-    height: 60,
+    width: 200,
+    height: 70,
     id: "empty",
     attrs: {
       body: {
-        stroke: "pink"
+        // fill: "pink"
       }
     }
   };
+//==============================================================
 
   const deleteSetting = {
     shape: "react-shape", //*  !!!!  *//
@@ -138,50 +150,76 @@ export default function GraphInitialize(graph) {
   deleteNode = graph.addNode(deleteSetting);
   deleteNode.hide();
 
-  graph.on("node:mouseenter", ({ node }) => {
-    console.log("enter: ", node.id);
-    if (node.id === "empty" || node.id === "delete") {
-      deleteNode.show(); // deleteNode = graph.addNode(deleteSetting);
-      // bind 
-      emptyNode.addChild(deleteNode);
-      // node.addTools([
-      //   {
-      //     name: "button-remove",
-      //     args: {
-      //       x: "100%",
-      //       y: 0
-      //       // offset: { x: 20, y: 25 }
-      //     }
-      //   }
-      // ]);
-    }
-  });
+  // graph.on("node:mouseenter", ({ node }) => {
+  //   console.log("enter: ", node.id);
+  //   if (node.id === "empty" || node.id === "delete") {
+  //     deleteNode.show(); // deleteNode = graph.addNode(deleteSetting);
+  //     // bind 
+  //     emptyNode.addChild(deleteNode);
+  //     // node.addTools([
+  //     //   {
+  //     //     name: "button-remove",
+  //     //     args: {
+  //     //       x: "100%",
+  //     //       y: 0
+  //     //       // offset: { x: 20, y: 25 }
+  //     //     }
+  //     //   }
+  //     // ]);
+  //   }
+  // });
 
-  graph.on("node:mouseleave", ({ node }) => {
-    console.log("leave: ", node.id);
-    if (node.id === "empty") {
-      // graph.removeNode(deleteNode);
-      deleteNode.hide();
-      // node.removeTools();
-    }
-  });
+  // graph.on("node:mouseleave", ({ node }) => {
+  //   console.log("leave: ", node.id);
+  //   if (node.id === "empty") {
+  //     // graph.removeNode(deleteNode);
+  //     deleteNode.hide();
+  //     // node.removeTools();
+  //   }
+  // });
 }
 
 //========= Styled Component ==========
 const Empty = styled.div`
-  margin: 0 20px;
-  width: 80%;
+  /* margin: 0 20px; */
+  width: 100%;
   height: 100%;
-  background: white;
-  border: 2px dashed lightgrey;
+  /* background: white; */
+  border: 2px solid red;
   font-size: small;
   color: lightgrey;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Delete = styled.div`
   background: red;
   border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const EmptyText = styled.div`
+  border: 3px dashed purple;
+  width: 130%;  /*  140%  */
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transform: translateX(-13%);
+  
+`;
+
+const DeleteBTN = styled.button`
+  position: absolute;
+  right: 0%;
+  transform: translateX(10px);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

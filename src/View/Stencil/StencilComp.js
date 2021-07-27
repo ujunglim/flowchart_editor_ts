@@ -41,35 +41,47 @@ export default function StencilComp({ graphRef, stencilRef }) {
           title: "讯飞服务",
           graphHeight: 300
         }
-      ]
-      // validateNode(droppingNode, options) {
-      //   const { width, height } = droppingNode.getProp("size");
-      //   const dropBBox = droppingNode.getBBox();
+      ],
+      validateNode(droppingNode, options) {
+        const graph = graphRef.current
+        for( let n of graph.getNodes()) {
+          if(n.id === 'empty'){
+            const b1 = droppingNode.getBBox();
+            const b2 = n.getBBox();
+            if(b1.isIntersectWithRect(b2)){
+              return true;
+            }
+          }
+        }
+        return false;
+        // const { width, height } = droppingNode.getProp("size");
+        // const dropBBox = droppingNode.getBBox();
 
-      //   const b = bound.current;
-      //   for (let i = 0; i < b.length; i++) {
-      //     const boundNode = b[i];
-      //     const boundBBox = boundNode.getBBox();
+        // const b = bound.current;
+        // for (let i = 0; i < b.length; i++) {
+        //   const boundNode = b[i];
+        //   const boundBBox = boundNode.getBBox();
 
-      //     // drop box inside of bound
-      //     if (dropBBox.isIntersectWithRect(boundBBox)) {
-      //       // 绑定 父子
-      //       droppingNode.setParent(boundNode);
-      //       boundNode.setChildren([droppingNode]);
-      //       // 居中
-      //       const { x: boundX, y: boundY } = boundNode.position();
-      //       const { width: boundW, height: boundH } = boundNode.size();
-      //       droppingNode.position(
-      //         boundX + (boundW - width) / 2,
-      //         boundY + (boundH - height) / 2
-      //       );
-      //       // bound invisible
-      //       // boundNode.hide();
-      //       return true;
-      //     }
-      //   }
-      //   return false;
-      // }
+        //   // drop box inside of bound
+        //   if (dropBBox.isIntersectWithRect(boundBBox)) {
+        //     // 绑定 父子
+        //     droppingNode.setParent(boundNode);
+        //     boundNode.setChildren([droppingNode]);
+        //     // 居中
+        //     const { x: boundX, y: boundY } = boundNode.position();
+        //     const { width: boundW, height: boundH } = boundNode.size();
+        //     droppingNode.position(
+        //       boundX + (boundW - width) / 2,
+        //       boundY + (boundH - height) / 2
+        //     );
+        //     // bound invisible
+        //     // boundNode.hide();
+        //     return true;
+        //   }
+        // }
+        // return false;
+
+      }
     });
     stencilRef.current = stencil;
     container.current.appendChild(stencil.container);
