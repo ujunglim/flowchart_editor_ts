@@ -12,18 +12,19 @@ export default function GraphComp({ graphRef }) {
       // autoResize: true,
       width: 800,
       height: 500,
-      grid: {
-        size: 10,
-        visible: true,
-        type: "dot",
-        args: {
-          color: "#a0a0a0",
-          thickness: 1
-        }
-      },
+      // grid: {
+      //   size: 10,
+      //   visible: true,
+      //   type: "dot",
+      //   args: {
+      //     color: "grey",  /*#a0a0a0*/
+      //     thickness: 1
+      //   }
+      // },
+      background: { color: '#F7FBFF' },
       interacting: {
         nodeMovable: false
-      }
+      },
       // embedding: {
       //   enabled: true
       // }
