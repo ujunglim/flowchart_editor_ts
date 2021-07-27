@@ -37,7 +37,7 @@ const Empty = styled.div`
 
 const EmptyText = styled.div`
   /* border: 3px dashed purple; */
-  width: 130%;  /*  140%  */
+  width: 130%; 
   height: 100%;
   display: flex;
   align-items: center;

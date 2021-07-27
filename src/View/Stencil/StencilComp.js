@@ -53,34 +53,21 @@ export default function StencilComp({ graphRef, stencilRef }) {
               // 剧中
               const {x: emptyX, y: emptyY} = node.position();
               const {width: emptyW} = node.size();
-              const {width: dropW, height: dropH} = droppingNode.size();
+              const {width: dropW} = droppingNode.size();
               droppingNode.position(emptyX + (emptyW - dropW)/2, emptyY);
 
               //绑定 父子
-              droppingNode.setParent(node);
-              node.setChildren([droppingNode]);
-
+              node.addChild(droppingNode);  // trigger change:children
+              
               // empty Node 跟 dropping Node一样大小
-              node.size(dropW, dropH);
-              node.position(emptyX + (emptyW - dropW)/2, emptyY);
+              node.fit();
+              
               
               return true;
             }
           }
         }
         return false;
-
-        //====================================================================
-        // 居中
-        // const { x: boundX, y: boundY } = boundNode.position();
-        // const { width: boundW, height: boundH } = boundNode.size();
-        // droppingNode.position(
-        //   boundX + (boundW - width) / 2,
-        //   boundY + (boundH - height) / 2
-        // );
-
-        //====================================================================
-
       }
     });
     stencilRef.current = stencil;
