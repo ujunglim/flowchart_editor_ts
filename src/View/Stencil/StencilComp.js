@@ -21,7 +21,7 @@ export default function StencilComp({ graphRef, stencilRef }) {
       placeholder: "全部服务/节点",
       notFoundText: "Not Found",
       collapsable: true,
-      stencilGraphWidth: 200,
+      stencilGraphWidth: 230,
       stencilGraphHeight: 100,
       layoutOptions: {
         columns: 1,
@@ -29,7 +29,11 @@ export default function StencilComp({ graphRef, stencilRef }) {
         dy: 0,
         center: true,
         columnWidth: 200,
-        rowHeight: 50
+        rowHeight: 50,
+
+      },
+      stencilGraphOptions: {
+        background: {color: '#ffffff',}
       },
       groups: [
         {
@@ -49,7 +53,8 @@ export default function StencilComp({ graphRef, stencilRef }) {
             const dropBBox = droppingNode.getBBox();
             const emptyBBox = node.getBBox();
 
-            if(dropBBox.isIntersectWithRect(emptyBBox)){
+            // 判断交叉，有没有child
+            if(dropBBox.isIntersectWithRect(emptyBBox) && node.getChildCount() === 0){
               // 剧中
               const {x: emptyX, y: emptyY} = node.position();
               const {width: emptyW} = node.size();
@@ -61,8 +66,7 @@ export default function StencilComp({ graphRef, stencilRef }) {
               
               // empty Node 跟 dropping Node一样大小
               node.fit();
-              const fitEvent = new Event('fit');
-              dispatchEvent(fitEvent);
+              node.trigger("fit", []);   // 记得写 arg
               
               return true;
             }
@@ -86,7 +90,7 @@ export default function StencilComp({ graphRef, stencilRef }) {
 
 //============ styled components ==============
 const StencilContainer = styled.div`
-  width: 200px;
+  width: 230px;
   border: 1px solid #f0f0f0;
   position: relative; /* !!! */
 `;

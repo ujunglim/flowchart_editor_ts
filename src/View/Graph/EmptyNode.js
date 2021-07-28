@@ -9,6 +9,6 @@ export default class EmptyNode {
     this.width = 200;
     this.height = 70;
     this.id = "empty";
-    this.component = <EmptyComp onDelete={onDelete}/>;
+    this.component = (node) => <EmptyComp node={node} onDelete={onDelete}/>;
   }
 }

@@ -33,6 +33,7 @@ export default function GraphEditor() {
 //============ styled components ==============
 const DIV = styled.div`
   display: flex;
+  justify-content: center;
   flex-direction: row-reverse;
   width: 100%;
 `;

@@ -3,14 +3,12 @@ import { Button } from 'antd';
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
-export default function EmptyComp({onDelete}) {
+export default function EmptyComp({node, onDelete}) {
   const emptyRef = useRef();
   const deleteRef = useRef();
 
   useEffect(() => {
-    emptyRef.current.addEventListener('fit', () => {
-      emptyRef.current.style.border = "none"
-    })
+    node.once("fit", () => emptyRef.current.style.display = "none")
   }, []);
 
   const onMouseEnter = () => {
