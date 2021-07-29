@@ -7,6 +7,7 @@ export default class StencilGroup_Base {
     this.Component = <></>;
   }
 
+  // create different nodes by title
   init() {
     this.nodes = [];
     for (let i = 0; i < this.titles.length; i++) {
@@ -21,6 +22,7 @@ export default class StencilGroup_Base {
     }
   }
 
+  // 模板节点添加到指定的群组中
   load(stencil) {
     stencil.load(this.nodes, this.groupName);
   }

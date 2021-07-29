@@ -8,7 +8,7 @@ export default function StencilComp({ graphRef, stencilRef }) {
   const container = useRef(null);
 
   useEffect(() => {
-    if (!graphRef.current) {
+    if(!graphRef.current) {
       return;
     }
     // create stencil instance
@@ -47,11 +47,11 @@ export default function StencilComp({ graphRef, stencilRef }) {
         }
       ],
       validateNode(droppingNode, options) {
-        const graph = graphRef.current
-        for( let node of graph.getNodes()) {
-          if(node.id === 'empty'){
-            const dropBBox = droppingNode.getBBox();
+        const graph = graphRef.current;
+        for(let node of graph.getNodes()) {
+          if(node.id === 'empty') {
             const emptyBBox = node.getBBox();
+            const dropBBox = droppingNode.getBBox();
 
             // 判断交叉，有没有child
             if(dropBBox.isIntersectWithRect(emptyBBox) && node.getChildCount() === 0){
@@ -75,6 +75,7 @@ export default function StencilComp({ graphRef, stencilRef }) {
         return false;
       }
     });
+
     stencilRef.current = stencil;
     container.current.appendChild(stencil.container);
 

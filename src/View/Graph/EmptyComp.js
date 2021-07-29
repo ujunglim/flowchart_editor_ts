@@ -18,7 +18,7 @@ export default function EmptyComp({node, onDelete}) {
   
   const onMouseLeave = () => {
     // console.log("leave");
-    deleteRef.current.style.display = "none";    
+    deleteRef.current.style.display = "none";
   }
 
   return (

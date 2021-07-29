@@ -1,6 +1,6 @@
 import EmptyNode from './EmptyNode';
 
-// setting of initial nodes(开始，结束，+)
+// setting of initial nodes(source, target, plusNode)
 const nodeSetting = {
   shape: "circle",
   width: 50,
@@ -14,8 +14,6 @@ const nodeSetting = {
 };
 
 export default function GraphInitialize(graph) {
-  // const bounds = useRef([]);
-
   const source = graph.addNode({
     ...nodeSetting,
     x: 350,
@@ -94,9 +92,6 @@ export default function GraphInitialize(graph) {
         source: emptyNode,
         target
       });
-    }
-    else if(node.id === "delete") {
-      console.log("clicked delete");
     }
   });
 }

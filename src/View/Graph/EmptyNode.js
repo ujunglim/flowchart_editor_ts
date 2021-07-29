@@ -1,6 +1,5 @@
 import EmptyComp from './EmptyComp';
 
-
 export default class EmptyNode {
   constructor(onDelete) {
     this.shape = "react-shape";

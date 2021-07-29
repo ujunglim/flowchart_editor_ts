@@ -3,10 +3,10 @@ import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 export default function GraphComp({ graphRef }) {
-  // create graph instance
   const container = useRef(null);
 
   useEffect(() => {
+    // create graph instance
     graphRef.current = new Graph({
       container: container.current,
       // autoResize: true,
