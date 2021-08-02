@@ -1,6 +1,6 @@
 import { usePortal } from "@antv/x6-react-shape";
 import { useEffect, useRef } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import GraphComp from "./View/Graph/GraphComp";
 import GraphInitialize from "./View/Graph/GraphInitialize";
 import StencilComp from "./View/Stencil/StencilComp";
@@ -19,6 +19,7 @@ export default function GraphEditor() {
 
   return (
     <DIV>
+      <GlobalStyle />
       <GraphComp graphRef={graphRef} />
       <StencilComp graphRef={graphRef} stencilRef={stencilRef} />
     </DIV>
@@ -26,6 +27,14 @@ export default function GraphEditor() {
 }
 
 //============ styled components ==============
+const GlobalStyle = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+`;
+
 const DIV = styled.div`
   display: flex;
   justify-content: center;

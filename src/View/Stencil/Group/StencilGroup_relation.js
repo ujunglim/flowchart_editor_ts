@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import StencilGroup_Base from "./StencilGroup_Base";
+import StencilGroup_base from "./StencilGroup_base";
 
-export default class StencilGroup_Relation extends StencilGroup_Base {
+export default class StencilGroup_relation extends StencilGroup_base {
   constructor() {
     super();
     this.titles = ["并行节点", "条件节点"];

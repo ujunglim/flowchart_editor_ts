@@ -1,54 +1,51 @@
 import { DeleteOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { useEffect, useRef } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 
-export default function EmptyComp({node, onDelete}) {
-  const emptyRef = useRef();
+export default function EditableNode({onDelete, children}) {
   const deleteRef = useRef();
-
-  useEffect(() => {
-    node.once("fit", () => emptyRef.current.style.display = "none")
-  }, []);
+  const [isEmpty, setIsEmpty] = useState(true);
 
   const onMouseEnter = () => {
-    // console.log("enter");
-    deleteRef.current.style.display = "inline";    
+    console.log("enter");
+    deleteRef.current.style.display = "block";    
   }
   
   const onMouseLeave = () => {
-    // console.log("leave");
+    console.log("leave");
     deleteRef.current.style.display = "none";
   }
 
   return (
-    <Empty ref={emptyRef}> 
-      <EmptyText onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-        请将左侧服务或关系拖入框内
-        <DeleteBTN onClick={onDelete} ref={deleteRef} icon={<DeleteOutlined />}/>
-      </EmptyText>
-    </Empty>
+    <NodeContainer onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      {/* {children} */}
+      {isEmpty && <Empty>请将左侧服务或关系拖入框内</Empty>}
+      <DeleteBTN onClick={onDelete} ref={deleteRef} icon={<DeleteOutlined />}/>
+    </NodeContainer>
   );
 }
 
 //============ Styled Component ===============
-const Empty = styled.div`
-  width: 100%;
-  height: 100%;
-  border: 2px dashed grey;
-  font-size: small;
-  color: grey;
-`;
-
-const EmptyText = styled.div`
-  /* border: 3px dashed purple; */
-  width: 130%; 
+const NodeContainer = styled.div`
+  border: 3px dashed purple;
+  width: 100%; 
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  transform: translateX(-13%);
+`;
+
+const Empty = styled.div`
+  width: 80%;
+  height: 100%;
+  border: 2px dashed grey;
+  font-size: small;
+  color: grey;
+  padding: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const DeleteBTN = styled(Button)`

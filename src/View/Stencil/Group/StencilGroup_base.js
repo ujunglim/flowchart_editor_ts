@@ -1,6 +1,6 @@
 import { ReactShape } from "@antv/x6-react-shape";
 
-export default class StencilGroup_Base {
+export default class StencilGroup_base {
   constructor() {
     this.titles = [];
     this.groupName = "";

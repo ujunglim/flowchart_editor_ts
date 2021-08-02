@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import StencilGroup_Base from "./StencilGroup_Base";
+import StencilGroup_base from "./StencilGroup_base";
 
-export default class StencilGroup_Service extends StencilGroup_Base {
+export default class StencilGroup_service extends StencilGroup_base {
   constructor() {
     super();
     this.titles = [

@@ -1,8 +1,8 @@
 import { Addon } from "@antv/x6";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import StencilGroup_Relation from "./Group/StencilGroup_Relation";
-import StencilGroup_Service from "./Group/StencilGroup_Service";
+import StencilGroup_relation from "./Group/StencilGroup_relation";
+import StencilGroup_service from "./Group/StencilGroup_service";
 
 export default function StencilComp({ graphRef, stencilRef }) {
   const container = useRef(null);
@@ -62,13 +62,17 @@ export default function StencilComp({ graphRef, stencilRef }) {
               droppingNode.position(emptyX + (emptyW - dropW)/2, emptyY);
 
               //绑定 父子
-              node.addChild(droppingNode);  // trigger change:children
+              // node.addChild(droppingNode);  // trigger change:children
               
               // empty Node 跟 dropping Node一样大小
-              node.fit();
-              node.trigger("fit", []);   // 记得写 arg
+              // node.fit();
+              // node.trigger("fit", []);   // 记得写 arg
+              const droppingNodeTitle = droppingNode.store.data.component.props.children;
+              console.log(droppingNodeTitle);
+
+              // give title of dropping node, and replace new node of graph
               
-              return true;
+              return false;
             }
           }
         }
@@ -79,10 +83,10 @@ export default function StencilComp({ graphRef, stencilRef }) {
     stencilRef.current = stencil;
     container.current.appendChild(stencil.container);
 
-    const serviceGroup = new StencilGroup_Service();
+    const serviceGroup = new StencilGroup_service();
     serviceGroup.load(stencil);
 
-    const relationGroup = new StencilGroup_Relation();
+    const relationGroup = new StencilGroup_relation();
     relationGroup.load(stencil);
   }, []);
 
