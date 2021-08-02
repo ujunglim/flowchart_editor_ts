@@ -1,7 +1,7 @@
 import { Addon } from "@antv/x6";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import EmptyNode from "../Graph/EmptyNode";
+import interaction from "../../Interaction/Interaction";
 import ServiceNode from '../Graph/ServiceNode';
 import StencilGroup_relation from "./Group/StencilGroup_relation";
 import StencilGroup_service from "./Group/StencilGroup_service";
@@ -56,20 +56,12 @@ export default function StencilComp({ graphRef, stencilRef }) {
             const dropBBox = droppingNode.getBBox();
 
             // 判断交叉，有没有child
-            if(dropBBox.isIntersectWithRect(emptyBBox) && node.getChildCount() === 0){
+            if(dropBBox.isIntersectWithRect(emptyBBox) && node.getChildCount() === 0) {
               // get title of dropping node
               const title = droppingNode.getData().title;
-              const serviceNodeSetting = new ServiceNode(node, title, (serviceNode) => {
-                // new emptyNode
-                const newEmptyNode = graph.addNode(new EmptyNode());
 
-                // get in, out edges of service node, then reconnect with newEmptyNode
-                graph.getIncomingEdges(serviceNode)[0].setTarget(newEmptyNode);
-                graph.getOutgoingEdges(serviceNode)[0].setSource(newEmptyNode);
-
-                // delete service node, add empty node
-                graph.removeNode(serviceNode);
-              });
+              const serviceNodeSetting = new ServiceNode(node, title, 
+                (serviceNode) => interaction.deleteServiceNode(serviceNode, graph));
               
               // add new graph node
               const serviceNode = graph.addNode(serviceNodeSetting);
