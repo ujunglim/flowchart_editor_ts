@@ -56,27 +56,19 @@ export default function StencilComp({ graphRef, stencilRef }) {
 
             // 判断交叉，有没有child
             if(dropBBox.isIntersectWithRect(emptyBBox) && node.getChildCount() === 0){
-              // 剧中
-              const {x: emptyX, y: emptyY} = node.position();
-              const {width: emptyW} = node.size();
-              const {width: dropW} = droppingNode.size();
-              droppingNode.position(emptyX + (emptyW - dropW)/2, emptyY);
-
-              //绑定 父子
-              // node.addChild(droppingNode);  // trigger change:children
-              
-              // empty Node 跟 dropping Node一样大小
-              // node.fit();
-              // node.trigger("fit", []);   // 记得写 arg
-              
               // get title of dropping node
-              const droppingNodeTitle = droppingNode.store.data.component.props.children;
-              // console.log(droppingNodeTitle);
-              <SingleNode title={droppingNodeTitle}></SingleNode>
-
-
-              // replace emptyNode to new node of graph
+              const title = droppingNode.getData().title;
+              const singleNodeSetting = new SingleNode(node, title, () => console.log("delete single"));
               
+              // add new graph node
+              const singleNode = graph.addNode(singleNodeSetting);
+
+              // get in, out edges of empty node, then reconnect with new singleNode
+              graph.getIncomingEdges(node)[0].setTarget(singleNode);
+              graph.getOutgoingEdges(node)[0].setSource(singleNode);
+
+              // remove empty node
+              graph.removeNode(node);
 
               return false;
             }

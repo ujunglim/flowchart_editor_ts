@@ -1,10 +1,24 @@
 import styled from 'styled-components';
+import EditableNode from './EditableNode';
 
-export default function SingleNode({title}) {
+export default class SingleNode {
+  constructor(emptyNode, title, onDelete) {
+    const {x, y} = emptyNode.position();
+    const {width} = emptyNode.size();
 
-  return <SNode>{title}</SNode>
+    this.shape = "react-shape";
+    this.width = 220;
+    this.height = 35;
+    this.x = x + (width - this.width)/2;
+    this.y = y;
+    this.id = "singleNode";
+    this.component = (node) => (
+      <EditableNode onDelete={onDelete}>
+        <SNode>{title}</SNode>
+      </EditableNode> 
+    )
+ }
 }
-
 
 //=========== Styled Components ==============
 const SNode = styled.div`

@@ -15,6 +15,7 @@ export default class StencilGroup_base {
       const node = new ReactShape({
         width: 170,
         height: 35,
+        data: {title},
         shape: "react-shape", //*  !!!!  *//
         component: <this.Component>{title}</this.Component>
       });

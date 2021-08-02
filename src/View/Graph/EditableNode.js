@@ -26,7 +26,7 @@ export default function EditableNode({onDelete, children}) {
 
 //============ Styled Component ===============
 const NodeContainer = styled.div`
-  /* border: 3px dashed purple; */
+  // border: 3px dashed purple; 
   width: 100%; 
   height: 100%;
   display: flex;
