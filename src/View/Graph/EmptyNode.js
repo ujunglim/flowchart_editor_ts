@@ -2,15 +2,26 @@ import styled from 'styled-components';
 import EditableNode from './EditableNode';
 
 export default class EmptyNode {
-  constructor(onDelete) {
-    this.shape = "react-shape";
-    this.x = 250;
-    this.y = 125;
+  constructor(deleteNode) {
     this.width = 250;
     this.height = 70;
+
+    if(deleteNode) {
+      // 居中
+      const {x, y} = deleteNode.position();
+      const {width} = deleteNode.size();
+      this.x = x + (width - this.width)/2;
+      this.y = y;
+    }
+    else {
+      this.x = 250;
+      this.y = 125;
+    }
+
+    this.shape = "react-shape";
     this.id = "empty";
     this.component = (node) => (
-      <EditableNode onDelete={onDelete}>
+      <EditableNode onDelete={() => {}}>
         <Empty>请将左侧服务或关系拖入框内</Empty>
       </EditableNode> 
     )

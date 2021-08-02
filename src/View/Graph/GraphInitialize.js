@@ -67,16 +67,11 @@ export default function GraphInitialize(graph) {
     target
   });
 
-  // delete empty node
-  const onDelete = () => {
-    console.log("delete empty node");
-  }
-
   graph.on("node:click", ({ node }) => {
     // click plus
     if (node.id === "plus") {
       // add emptyNode
-      const emptyNode = graph.addNode(new EmptyNode(onDelete));
+      const emptyNode = graph.addNode(new EmptyNode());
       target.translate(undefined, 100);
       // plus is invisible
       plusNode.hide();

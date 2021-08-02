@@ -1,6 +1,7 @@
 import { Addon } from "@antv/x6";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
+import EmptyNode from "../Graph/EmptyNode";
 import SingleNode from '../Graph/SingleNode';
 import StencilGroup_relation from "./Group/StencilGroup_relation";
 import StencilGroup_service from "./Group/StencilGroup_service";
@@ -58,7 +59,17 @@ export default function StencilComp({ graphRef, stencilRef }) {
             if(dropBBox.isIntersectWithRect(emptyBBox) && node.getChildCount() === 0){
               // get title of dropping node
               const title = droppingNode.getData().title;
-              const singleNodeSetting = new SingleNode(node, title, () => console.log("delete single"));
+              const singleNodeSetting = new SingleNode(node, title, (singleNode) => {
+                // new emptyNode
+                const newEmptyNode = graph.addNode(new EmptyNode());
+
+                // get in, out edges of single node, then reconnect with newEmptyNode
+                graph.getIncomingEdges(singleNode)[0].setTarget(newEmptyNode);
+                graph.getOutgoingEdges(singleNode)[0].setSource(newEmptyNode);
+
+                // delete single node, add empty node
+                graph.removeNode(singleNode);
+              });
               
               // add new graph node
               const singleNode = graph.addNode(singleNodeSetting);

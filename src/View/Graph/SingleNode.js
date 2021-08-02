@@ -13,7 +13,7 @@ export default class SingleNode {
     this.y = y;
     this.id = "singleNode";
     this.component = (node) => (
-      <EditableNode onDelete={onDelete}>
+      <EditableNode onDelete={() => onDelete(node)}>
         <SNode>{title}</SNode>
       </EditableNode> 
     )
