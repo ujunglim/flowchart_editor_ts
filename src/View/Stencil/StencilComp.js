@@ -2,7 +2,7 @@ import { Addon } from "@antv/x6";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import EmptyNode from "../Graph/EmptyNode";
-import SingleNode from '../Graph/SingleNode';
+import ServiceNode from '../Graph/ServiceNode';
 import StencilGroup_relation from "./Group/StencilGroup_relation";
 import StencilGroup_service from "./Group/StencilGroup_service";
 
@@ -59,24 +59,24 @@ export default function StencilComp({ graphRef, stencilRef }) {
             if(dropBBox.isIntersectWithRect(emptyBBox) && node.getChildCount() === 0){
               // get title of dropping node
               const title = droppingNode.getData().title;
-              const singleNodeSetting = new SingleNode(node, title, (singleNode) => {
+              const serviceNodeSetting = new ServiceNode(node, title, (serviceNode) => {
                 // new emptyNode
                 const newEmptyNode = graph.addNode(new EmptyNode());
 
-                // get in, out edges of single node, then reconnect with newEmptyNode
-                graph.getIncomingEdges(singleNode)[0].setTarget(newEmptyNode);
-                graph.getOutgoingEdges(singleNode)[0].setSource(newEmptyNode);
+                // get in, out edges of service node, then reconnect with newEmptyNode
+                graph.getIncomingEdges(serviceNode)[0].setTarget(newEmptyNode);
+                graph.getOutgoingEdges(serviceNode)[0].setSource(newEmptyNode);
 
-                // delete single node, add empty node
-                graph.removeNode(singleNode);
+                // delete service node, add empty node
+                graph.removeNode(serviceNode);
               });
               
               // add new graph node
-              const singleNode = graph.addNode(singleNodeSetting);
+              const serviceNode = graph.addNode(serviceNodeSetting);
 
-              // get in, out edges of empty node, then reconnect with new singleNode
-              graph.getIncomingEdges(node)[0].setTarget(singleNode);
-              graph.getOutgoingEdges(node)[0].setSource(singleNode);
+              // get in, out edges of empty node, then reconnect with new serviceNode
+              graph.getIncomingEdges(node)[0].setTarget(serviceNode);
+              graph.getOutgoingEdges(node)[0].setSource(serviceNode);
 
               // remove empty node
               graph.removeNode(node);

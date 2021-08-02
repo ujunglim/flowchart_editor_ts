@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import EditableNode from './EditableNode';
 
-export default class SingleNode {
+export default class ServiceNode {
   constructor(emptyNode, title, onDelete) {
     const {x, y} = emptyNode.position();
     const {width} = emptyNode.size();
@@ -11,7 +11,7 @@ export default class SingleNode {
     this.height = 35;
     this.x = x + (width - this.width)/2;
     this.y = y;
-    this.id = "singleNode";
+    this.id = "serviceNode";
     this.component = (node) => (
       <EditableNode onDelete={() => onDelete(node)}>
         <SNode>{title}</SNode>
