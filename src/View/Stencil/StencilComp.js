@@ -1,6 +1,7 @@
 import { Addon } from "@antv/x6";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
+import SingleNode from '../Graph/SingleNode';
 import StencilGroup_relation from "./Group/StencilGroup_relation";
 import StencilGroup_service from "./Group/StencilGroup_service";
 
@@ -67,11 +68,16 @@ export default function StencilComp({ graphRef, stencilRef }) {
               // empty Node 跟 dropping Node一样大小
               // node.fit();
               // node.trigger("fit", []);   // 记得写 arg
-              const droppingNodeTitle = droppingNode.store.data.component.props.children;
-              console.log(droppingNodeTitle);
-
-              // give title of dropping node, and replace new node of graph
               
+              // get title of dropping node
+              const droppingNodeTitle = droppingNode.store.data.component.props.children;
+              // console.log(droppingNodeTitle);
+              <SingleNode title={droppingNodeTitle}></SingleNode>
+
+
+              // replace emptyNode to new node of graph
+              
+
               return false;
             }
           }
