@@ -13,7 +13,7 @@ export default class StencilGroup_service extends StencilGroup_base {
     ];
     this.groupName = "讯飞服务";
     this.Component = ServiceNode;
-    this.init();
+    this.init("service");
   }
 }
 

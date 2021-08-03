@@ -7,7 +7,7 @@ export default class StencilGroup_relation extends StencilGroup_base {
     this.titles = ["并行节点", "条件节点"];
     this.groupName = "关系节点";
     this.Component = RelationNode;
-    this.init();
+    this.init("relation");
   }
 }
 

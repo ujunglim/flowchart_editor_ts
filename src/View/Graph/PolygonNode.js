@@ -2,13 +2,13 @@ import EditableNode from "./EditableNode";
 import Polygon from "./Polygon";
 
 export default class PolygonNode {
-	constructor(emptyNode, onDelete) {
+	constructor(title, emptyNode, onDelete) {
 		const {x, y} = emptyNode.position();
 		const {width} = emptyNode.size();
 
 		this.shape = 'react-shape';
-		this.width = 220;
-		this.height = 70;
+		this.width = 210;
+		this.height = 50;
 		this.x = x + (width - this.width)/2;
 		this.y = y;
 		this.id = "polygonNode";
@@ -17,6 +17,5 @@ export default class PolygonNode {
 				<Polygon fillColor={"none"} strokeColor={"#1890FF"} strokeWidth={"1px"}/>
 			</EditableNode>
 		)
-
 	}
 }

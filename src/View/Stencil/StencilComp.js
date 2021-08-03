@@ -56,39 +56,39 @@ export default function StencilComp({ graphRef, stencilRef }) {
             const emptyBBox = node.getBBox();
             const dropBBox = droppingNode.getBBox();
 
+            const incomingEdge = graph.getIncomingEdges(node)[0];
+            const outgoingEdge = graph.getOutgoingEdges(node)[0];
+
+
             // 判断交叉，有没有child
             if(dropBBox.isIntersectWithRect(emptyBBox) && node.getChildCount() === 0) {
-              // get title of dropping node
-              const title = droppingNode.getData().title;
+              // get title and group of dropping node
+              const {title, group} = droppingNode.getData();
+              let newNode = null;
 
               // 判断 relation or service node
-              if(title !== "并行节点" && title !== "条件节点") {
+              if(group === "service") {
                 const serviceNodeSetting = new ServiceNode(node, title, 
-                  (serviceNode) => interaction.deleteServiceNode(serviceNode, graph));
+                  (currNode) => interaction.deleteServiceNode(currNode, graph));
                 
                 // add new graph node
-                const serviceNode = graph.addNode(serviceNodeSetting);
-  
-                // get in and out edges of empty node, then reconnect with new serviceNode
-                graph.getIncomingEdges(node)[0].setTarget(serviceNode);
-                graph.getOutgoingEdges(node)[0].setSource(serviceNode);
-  
-                // remove empty node
-                graph.removeNode(node);
+                newNode = graph.addNode(serviceNodeSetting);
               }
-              else {
+              else if(group === "relation") {
                 // add Polygon node
-                const polygonNodeSetting = new PolygonNode(node, 
-                  () => interaction.deleteParalleleNode(polygonNode, graph));
-                const polygonNode = graph.addNode(polygonNodeSetting);
+                const polygonNodeSetting = new PolygonNode("并行开始", node, 
+                  (currNode) => interaction.deleteParalleleNode(currNode, graph));
 
-                // get in and out edge of empty node, then reconnect with new polygon node
-                graph.getIncomingEdges(node)[0].setTarget(polygonNode);
-                graph.getOutgoingEdges(node)[0].setSource(polygonNode);
-
-                // remove empty node
-                graph.removeNode(node);
+                newNode = graph.addNode(polygonNodeSetting);
               }
+
+              // get in and out edge of empty node, then reconnect with new polygon node
+              incomingEdge.setTarget(newNode);
+              outgoingEdge.setSource(newNode);
+
+              // remove empty node
+              graph.removeNode(node);
+
               return false;
             }
           }

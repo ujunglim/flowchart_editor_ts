@@ -8,14 +8,14 @@ export default class StencilGroup_base {
   }
 
   // create different nodes by title
-  init() {
+  init(group) {
     this.nodes = [];
     for (let i = 0; i < this.titles.length; i++) {
       const title = this.titles[i];
       const node = new ReactShape({
         width: 170,
         height: 35,
-        data: {title},
+        data: {title, group},
         shape: "react-shape", //*  !!!!  *//
         component: <this.Component>{title}</this.Component>
       });
