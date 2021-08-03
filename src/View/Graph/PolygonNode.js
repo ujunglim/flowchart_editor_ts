@@ -14,7 +14,7 @@ export default class PolygonNode {
 		this.id = "polygonNode";
 		this.component = (node) => (
 			<EditableNode onDelete={() => onDelete(node)}>
-				<Polygon fillColor={"none"} strokeColor={"#1890FF"} strokeWidth={"1px"}/>
+				<Polygon fillColor={"none"} strokeColor={"#1890FF"} strokeWidth={"1px"}>{title}</Polygon>
 			</EditableNode>
 		)
 	}
