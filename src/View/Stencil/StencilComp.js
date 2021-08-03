@@ -2,6 +2,7 @@ import { Addon } from "@antv/x6";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import interaction from "../../Interaction/Interaction";
+import PolygonNode from "../Graph/PolygonNode";
 import ServiceNode from '../Graph/ServiceNode';
 import StencilGroup_relation from "./Group/StencilGroup_relation";
 import StencilGroup_service from "./Group/StencilGroup_service";
@@ -60,19 +61,34 @@ export default function StencilComp({ graphRef, stencilRef }) {
               // get title of dropping node
               const title = droppingNode.getData().title;
 
-              const serviceNodeSetting = new ServiceNode(node, title, 
-                (serviceNode) => interaction.deleteServiceNode(serviceNode, graph));
-              
-              // add new graph node
-              const serviceNode = graph.addNode(serviceNodeSetting);
+              // 判断 relation or service node
+              if(title !== "并行节点" && title !== "条件节点") {
+                const serviceNodeSetting = new ServiceNode(node, title, 
+                  (serviceNode) => interaction.deleteServiceNode(serviceNode, graph));
+                
+                // add new graph node
+                const serviceNode = graph.addNode(serviceNodeSetting);
+  
+                // get in and out edges of empty node, then reconnect with new serviceNode
+                graph.getIncomingEdges(node)[0].setTarget(serviceNode);
+                graph.getOutgoingEdges(node)[0].setSource(serviceNode);
+  
+                // remove empty node
+                graph.removeNode(node);
+              }
+              else {
+                // add Polygon node
+                const polygonNodeSetting = new PolygonNode(node, 
+                  () => interaction.deleteParalleleNode(polygonNode, graph));
+                const polygonNode = graph.addNode(polygonNodeSetting);
 
-              // get in, out edges of empty node, then reconnect with new serviceNode
-              graph.getIncomingEdges(node)[0].setTarget(serviceNode);
-              graph.getOutgoingEdges(node)[0].setSource(serviceNode);
+                // get in and out edge of empty node, then reconnect with new polygon node
+                graph.getIncomingEdges(node)[0].setTarget(polygonNode);
+                graph.getOutgoingEdges(node)[0].setSource(polygonNode);
 
-              // remove empty node
-              graph.removeNode(node);
-
+                // remove empty node
+                graph.removeNode(node);
+              }
               return false;
             }
           }

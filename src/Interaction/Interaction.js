@@ -25,8 +25,15 @@ class Interaction {
 		graph.removeNode(serviceNode);
 	}
 
-	deleteParalleleNode() {
+	deleteParalleleNode(polygonNode, graph) {
+		const newEmptyNode = graph.addNode(new EmptyNode());
 
+		// get in, out edges of polygon node, then reconnect with newEmptyNode
+		graph.getIncomingEdges(polygonNode)[0].setTarget(newEmptyNode);
+		graph.getOutgoingEdges(polygonNode)[0].setSource(newEmptyNode);
+
+		// delete polygon node
+		graph.removeNode(polygonNode);
 	}
 }
 
