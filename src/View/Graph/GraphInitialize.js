@@ -36,6 +36,13 @@ export default function GraphInitialize(graph) {
     }
   });
 
+  graph.on("AddParallel", () => {
+    console.log("added parallel!", target)
+    target.translate(undefined, 100)
+  })
+
+  
+
   const plusNode = graph.addNode({
     ...nodeSetting,
     id: "plus",

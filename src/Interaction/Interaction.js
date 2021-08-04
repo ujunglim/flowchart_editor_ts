@@ -1,13 +1,13 @@
 import EmptyNode from "../View/Graph/EmptyNode";
-import PolygonNode from "../View/Graph/PolygonNode";
+import { PolygonFinishNode, PolygonStartNode } from "../View/Graph/PolygonNode";
 import ServiceNode from '../View/Graph/ServiceNode';
-
 
 class Interaction {
 	constructor() {
 		
 	}
 
+	// 只是检查 true or false 能不能放node
 	validateNode(droppingNode, options, graph) {
 		this.graph = graph;
 
@@ -16,9 +16,6 @@ class Interaction {
 			if(node.id === 'empty') {
 				const emptyBBox = node.getBBox();
 				const dropBBox = droppingNode.getBBox();
-
-				const incomingEdge = graph.getIncomingEdges(node)[0];
-				const outgoingEdge = graph.getOutgoingEdges(node)[0];
 
 				// 判断交叉，有没有child
 				if(dropBBox.isIntersectWithRect(emptyBBox) && node.getChildCount() === 0) {
@@ -34,13 +31,8 @@ class Interaction {
 						newNode = this.addParallelNode(node, newNode);
 					}
 
-					// get in and out edge of empty node, then reconnect with new polygon node
-					incomingEdge.setTarget(newNode, title, newNode);
-					outgoingEdge.setSource(newNode, title, newNode);
-
 					// remove empty node
 					graph.removeNode(node);
-
 					return false;
 				}
 			}
@@ -51,17 +43,44 @@ class Interaction {
 	addServiceNode(oldNode, title) {
 		const serviceNodeSetting = new ServiceNode(oldNode, title, 
 			(currNode) => this.deleteServiceNode(currNode));
-						
-		// add service node
-		return this.graph.addNode(serviceNodeSetting);
+		const serviceNode = this.graph.addNode(serviceNodeSetting)
+
+		// 根据 oldNode 拿到他的 edges
+		const incomingEdge = this.graph.getIncomingEdges(oldNode)[0];
+		const outgoingEdge = this.graph.getOutgoingEdges(oldNode)[0];
+
+		// get in and out edge of empty node, then reconnect with new polygon node
+		incomingEdge.setTarget(serviceNode);
+		outgoingEdge.setSource(serviceNode);
 	}
 
 	addParallelNode(oldNode) {
-		const polygonNodeSetting = new PolygonNode("并行开始", oldNode, 
-		(currNode) => this.deleteParalleleNode(currNode));
+		// 创建新的 poly instances，根据 oldNode 剧中他们
+		const startInstance = new PolygonStartNode(oldNode, this.graph, (currNode) => this.deleteParalleleNode(currNode));
+		const finishInstance = new PolygonFinishNode(oldNode, this.graph);
 
-		// add Polygon node
-		return this.graph.addNode(polygonNodeSetting);
+		// 根据 oldNode 拿到他的 edges
+		const incomingEdge = this.graph.getIncomingEdges(oldNode)[0];
+		const outgoingEdge = this.graph.getOutgoingEdges(oldNode)[0];
+
+		// get in and out edge of empty node, then reconnect with new polygon node
+		incomingEdge.setTarget(startInstance.node);
+		outgoingEdge.setSource(finishInstance.node);
+
+		// add poly instances 之间的 edge
+		this.graph.addEdge({
+			source: startInstance.node,
+			target: finishInstance.node,
+			attrs: {
+				line: {
+					stroke: "red",
+					sourceMarker: "circle"
+					// size: 1
+				}
+			}
+		})
+
+		this.graph.trigger("AddParallel");
 	}
 
 	deleteServiceNode(serviceNode) {
@@ -74,6 +93,7 @@ class Interaction {
 
 		// delete service node
 		this.graph.removeNode(serviceNode);
+
 	}
 
 	deleteParalleleNode(polygonNode) {

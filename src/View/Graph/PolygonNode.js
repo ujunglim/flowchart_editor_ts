@@ -1,21 +1,44 @@
 import EditableNode from "./EditableNode";
 import Polygon from "./Polygon";
 
-export default class PolygonNode {
-	constructor(title, emptyNode, onDelete) {
+export class PolygonStartNode {
+	constructor(emptyNode, graph, onDelete) {
 		const {x, y} = emptyNode.position();
 		const {width} = emptyNode.size();
 
-		this.shape = 'react-shape';
 		this.width = 210;
 		this.height = 50;
 		this.x = x + (width - this.width)/2;
 		this.y = y;
-		this.id = "polygonNode";
+		this.shape = 'react-shape';
+		this.id = "polygonStartNode";
 		this.component = (node) => (
 			<EditableNode onDelete={() => onDelete(node)}>
-				<Polygon fillColor={"none"} strokeColor={"#1890FF"} strokeWidth={"1px"}>{title}</Polygon>
+				<Polygon fillColor={"none"} strokeColor={"#1890FF"} strokeWidth={"1px"}>并行开始</Polygon>
 			</EditableNode>
 		)
+
+		// add node
+		this.node = graph.addNode(this);
+	}
+}
+
+export class PolygonFinishNode {
+	constructor(emptyNode, graph) {
+		const {x, y} = emptyNode.position();
+		const {width} = emptyNode.size();
+
+		this.width = 210;
+		this.height = 50;
+		this.x = x + (width - this.width)/2;
+		this.y = y + 100;
+		this.shape = 'react-shape';
+		this.id = "polygonFinishNode";
+		this.component = (
+			<Polygon fillColor={"none"} strokeColor={"#1890FF"} strokeWidth={"1px"}>并行结束</Polygon>
+		)
+
+		// add node
+		this.node = graph.addNode(this);
 	}
 }
