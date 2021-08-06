@@ -3,10 +3,6 @@ import { PolygonFinishNode, PolygonStartNode } from "../View/Graph/PolygonNode";
 import ServiceNode from '../View/Graph/ServiceNode';
 
 class Interaction {
-	constructor() {
-		
-	}
-
 	// 只是检查 true or false 能不能放node
 	validateNode(droppingNode, options, graph) {
 		this.graph = graph;
@@ -43,7 +39,7 @@ class Interaction {
 	addServiceNode(oldNode, title) {
 		const serviceNodeSetting = new ServiceNode(oldNode, title, 
 			(currNode) => this.deleteServiceNode(currNode));
-		const serviceNode = this.graph.addNode(serviceNodeSetting)
+		const serviceNode = this.graph.addNode(serviceNodeSetting);
 
 		// 根据 oldNode 拿到他的 edges
 		const incomingEdge = this.graph.getIncomingEdges(oldNode)[0];
@@ -59,18 +55,22 @@ class Interaction {
 		const startInstance = new PolygonStartNode(oldNode, this.graph, (currNode) => this.deleteParalleleNode(currNode));
 		const finishInstance = new PolygonFinishNode(oldNode, this.graph);
 
+		// add new polygon nodes
+		const startNode = this.graph.addNode(startInstance);
+		const finishNode = this.graph.addNode(finishInstance);
+
 		// 根据 oldNode 拿到他的 edges
 		const incomingEdge = this.graph.getIncomingEdges(oldNode)[0];
 		const outgoingEdge = this.graph.getOutgoingEdges(oldNode)[0];
 
-		// get in and out edge of empty node, then reconnect with new polygon node
-		incomingEdge.setTarget(startInstance.node);
-		outgoingEdge.setSource(finishInstance.node);
+		// get in and out edge of empty node, then reconnect with new polygon nodes
+		incomingEdge.setTarget(startNode);
+		outgoingEdge.setSource(finishNode);
 
 		// add poly instances 之间的 edge
 		this.graph.addEdge({
-			source: startInstance.node,
-			target: finishInstance.node,
+			source: startNode,
+			target: finishNode,
 			attrs: {
 				line: {
 					stroke: "red",
@@ -80,6 +80,7 @@ class Interaction {
 			}
 		})
 
+		// trigger of add parallel node event 
 		this.graph.trigger("AddParallel");
 	}
 

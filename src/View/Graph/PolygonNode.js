@@ -17,9 +17,6 @@ export class PolygonStartNode {
 				<Polygon fillColor={"none"} strokeColor={"#1890FF"} strokeWidth={"1px"}>并行开始</Polygon>
 			</EditableNode>
 		)
-
-		// add node
-		this.node = graph.addNode(this);
 	}
 }
 
@@ -34,11 +31,6 @@ export class PolygonFinishNode {
 		this.y = y + 100;
 		this.shape = 'react-shape';
 		this.id = "polygonFinishNode";
-		this.component = (
-			<Polygon fillColor={"none"} strokeColor={"#1890FF"} strokeWidth={"1px"}>并行结束</Polygon>
-		)
-
-		// add node
-		this.node = graph.addNode(this);
+		this.component = <Polygon fillColor={"none"} strokeColor={"#1890FF"} strokeWidth={"1px"}>并行结束</Polygon>
 	}
 }

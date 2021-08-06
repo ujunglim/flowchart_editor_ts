@@ -36,12 +36,11 @@ export default function GraphInitialize(graph) {
     }
   });
 
+  // listener of add parallel node event 
   graph.on("AddParallel", () => {
-    console.log("added parallel!", target)
-    target.translate(undefined, 100)
+    console.log("added parallel!", target);
+    target.translate(undefined, 100);
   })
-
-  
 
   const plusNode = graph.addNode({
     ...nodeSetting,
