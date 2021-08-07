@@ -42,6 +42,12 @@ export default function GraphInitialize(graph) {
     target.translate(undefined, 100);
   })
 
+  // listener of delete parallel node event 
+  graph.on("DeleteParallel", () => {
+    console.log("delete parallel");
+    target.translate(undefined, -100);
+  })
+
   const plusNode = graph.addNode({
     ...nodeSetting,
     id: "plus",

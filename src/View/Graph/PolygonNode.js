@@ -2,7 +2,7 @@ import EditableNode from "./EditableNode";
 import Polygon from "./Polygon";
 
 export class PolygonStartNode {
-	constructor(emptyNode, graph, onDelete) {
+	constructor(emptyNode, onDelete) {
 		const {x, y} = emptyNode.position();
 		const {width} = emptyNode.size();
 
@@ -21,7 +21,7 @@ export class PolygonStartNode {
 }
 
 export class PolygonFinishNode {
-	constructor(emptyNode, graph) {
+	constructor(emptyNode) {
 		const {x, y} = emptyNode.position();
 		const {width} = emptyNode.size();
 

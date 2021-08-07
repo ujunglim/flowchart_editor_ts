@@ -51,9 +51,13 @@ class Interaction {
 	}
 
 	addParallelNode(oldNode) {
+		// create container node, 用来一次性 delete 整个 parallel node 树
+		const containerNode = this.graph.addNode({})
+
 		// 创建新的 poly instances，根据 oldNode 剧中他们
-		const startInstance = new PolygonStartNode(oldNode, this.graph, (currNode) => this.deleteParalleleNode(currNode));
-		const finishInstance = new PolygonFinishNode(oldNode, this.graph);
+		const startInstance = new PolygonStartNode(oldNode, 
+			(startNode) => this.deleteParalleleNode(startNode, finishNode, containerNode));
+		const finishInstance = new PolygonFinishNode(oldNode);
 
 		// add new polygon nodes
 		const startNode = this.graph.addNode(startInstance);
@@ -68,7 +72,7 @@ class Interaction {
 		outgoingEdge.setSource(finishNode);
 
 		// add poly instances 之间的 edge
-		this.graph.addEdge({
+		const edge1 = this.graph.addEdge({
 			source: startNode,
 			target: finishNode,
 			attrs: {
@@ -79,6 +83,11 @@ class Interaction {
 				}
 			}
 		})
+
+		// add child node, edge to containerNode
+		containerNode.addChild(startNode);
+		containerNode.addChild(finishNode);
+		containerNode.addChild(edge1);
 
 		// trigger of add parallel node event 
 		this.graph.trigger("AddParallel");
@@ -97,16 +106,19 @@ class Interaction {
 
 	}
 
-	deleteParalleleNode(polygonNode) {
+	deleteParalleleNode(startNode, finishNode, containerNode) {
 		// add new emptyNode
 		const newEmptyNode = this.graph.addNode(new EmptyNode());
 
-		// get in, out edges of polygon node, then reconnect with newEmptyNode
-		this.graph.getIncomingEdges(polygonNode)[0].setTarget(newEmptyNode);
-		this.graph.getOutgoingEdges(polygonNode)[0].setSource(newEmptyNode);
+		// get in, out edges of polygonStart, finish node, then reconnect with newEmptyNode
+		this.graph.getIncomingEdges(startNode)[0].setTarget(newEmptyNode);
+		this.graph.getOutgoingEdges(finishNode)[0].setSource(newEmptyNode);
 
-		// delete polygon node
-		this.graph.removeNode(polygonNode);
+		// delete containerNode
+		this.graph.removeNode(containerNode);
+
+		// trigger of delete parallel node event
+		this.graph.trigger("DeleteParallel");
 	}
 }
 
