@@ -1,4 +1,4 @@
-import EmptyNode from "../View/Graph/EmptyNode";
+import { EmptyNode, EmptyParallelNode } from "../View/Graph/EmptyNode";
 import { PolygonFinishNode, PolygonStartNode } from "../View/Graph/PolygonNode";
 import ServiceNode from '../View/Graph/ServiceNode';
 
@@ -59,8 +59,10 @@ class Interaction {
 			(startNode) => this.deleteParalleleNode(startNode, finishNode, containerNode));
 		const finishInstance = new PolygonFinishNode(oldNode);
 
-		// add new polygon nodes
+		// add new tree of parallel nodes
 		const startNode = this.graph.addNode(startInstance);
+		const leftNode = this.graph.addNode(new EmptyParallelNode(120, 'leftParallelNode', () => {console.log("delete ")}));
+		const rightNode = this.graph.addNode(new EmptyParallelNode(380, 'rightParallelNode'));
 		const finishNode = this.graph.addNode(finishInstance);
 
 		// 根据 oldNode 拿到他的 edges
@@ -84,8 +86,10 @@ class Interaction {
 			}
 		})
 
-		// add child node, edge to containerNode
+		// add child nodes, edges to containerNode
 		containerNode.addChild(startNode);
+		containerNode.addChild(leftNode);
+		containerNode.addChild(rightNode);
 		containerNode.addChild(finishNode);
 		containerNode.addChild(edge1);
 

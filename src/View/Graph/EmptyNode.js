@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import EditableNode from './EditableNode';
 
-export default class EmptyNode {
+export class EmptyNode {
   constructor(deleteNode) {
     this.width = 250;
     this.height = 70;
@@ -23,6 +23,22 @@ export default class EmptyNode {
     this.component = (node) => (
       <EditableNode onDelete={() => {}}>
         <Empty>请将左侧服务或关系拖入框内</Empty>
+      </EditableNode> 
+    )
+  }
+}
+
+export class EmptyParallelNode {
+  constructor(x, id, onDelete) {
+    this.width = 250;
+    this.height = 70;
+    this.x = x;
+    this.y = 225;
+    this.shape = "react-shape";
+    this.id = id;
+    this.component = (node) => (
+      <EditableNode onDelete={() => {onDelete()}}>
+        <Empty>请将左侧服务拖入框内</Empty>
       </EditableNode> 
     )
   }

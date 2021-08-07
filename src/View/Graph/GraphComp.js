@@ -11,7 +11,7 @@ export default function GraphComp({ graphRef }) {
       container: container.current,
       // autoResize: true,
       width: 800,
-      height: 500,
+      height: 700,
       // grid: {
       //   size: 10,
       //   visible: true,

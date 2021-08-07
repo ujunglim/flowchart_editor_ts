@@ -1,4 +1,4 @@
-import EmptyNode from './EmptyNode';
+import { EmptyNode } from './EmptyNode';
 
 // setting of initial nodes(source, target, plusNode)
 const nodeSetting = {
@@ -28,7 +28,7 @@ export default function GraphInitialize(graph) {
   const target = graph.addNode({
     ...nodeSetting,
     x: 350,
-    y: 140,
+    y: 160,
     attrs: {
       label: {
         text: "结束"
@@ -38,14 +38,12 @@ export default function GraphInitialize(graph) {
 
   // listener of add parallel node event 
   graph.on("AddParallel", () => {
-    console.log("added parallel!", target);
-    target.translate(undefined, 100);
+    target.translate(undefined, 200);
   })
 
   // listener of delete parallel node event 
   graph.on("DeleteParallel", () => {
-    console.log("delete parallel");
-    target.translate(undefined, -100);
+    target.translate(undefined, -200);
   })
 
   const plusNode = graph.addNode({
