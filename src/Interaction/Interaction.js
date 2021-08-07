@@ -125,6 +125,10 @@ class Interaction {
 		containerNode.addChild(leftNode);
 		containerNode.addChild(rightNode);
 		containerNode.addChild(finishNode);
+		containerNode.addChild(leftUpEdge);
+		containerNode.addChild(rightUpEdge);
+		containerNode.addChild(leftDownEdge);
+		containerNode.addChild(rightDownEdge);
 
 		// trigger of add parallel node event 
 		this.graph.trigger("AddParallel");
