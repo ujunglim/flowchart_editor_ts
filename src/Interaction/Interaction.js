@@ -59,7 +59,7 @@ class Interaction {
 			(startNode) => this.deleteParalleleNode(startNode, finishNode, containerNode));
 		const finishInstance = new PolygonFinishNode(oldNode);
 
-		// add new tree of parallel nodes
+		// add nodes of parallel tree
 		const startNode = this.graph.addNode(startInstance);
 		const leftNode = this.graph.addNode(new EmptyParallelNode(120, 'leftParallelNode', () => {console.log("delete ")}));
 		const rightNode = this.graph.addNode(new EmptyParallelNode(380, 'rightParallelNode'));
@@ -69,21 +69,55 @@ class Interaction {
 		const incomingEdge = this.graph.getIncomingEdges(oldNode)[0];
 		const outgoingEdge = this.graph.getOutgoingEdges(oldNode)[0];
 
-		// get in and out edge of empty node, then reconnect with new polygon nodes
+		// get in and out edge of empty node, then reconnect with start, finish nodes
 		incomingEdge.setTarget(startNode);
 		outgoingEdge.setSource(finishNode);
 
-		// add poly instances 之间的 edge
-		const edge1 = this.graph.addEdge({
-			source: startNode,
-			target: finishNode,
+		// add edges
+		const edgeSetting = {
+			router: 'orth',
 			attrs: {
 				line: {
-					stroke: "red",
+					stroke: "#1890FF",
 					sourceMarker: "circle"
-					// size: 1
 				}
 			}
+		}
+
+		const leftUpEdge = this.graph.addEdge({
+			...edgeSetting,
+			source: startNode,
+			target: leftNode,
+			vertices: [
+        { x: 300, y: 220 },
+      ]
+		})
+
+		const rightUpEdge = this.graph.addEdge({
+			...edgeSetting,
+			source: startNode,
+			target: rightNode,
+			vertices: [
+        { x: 400, y: 220 },
+      ]
+		})
+
+		const leftDownEdge = this.graph.addEdge({
+			...edgeSetting,
+			source: leftNode,
+			target: finishNode,
+			vertices: [
+        { x: 300, y: 350 },
+      ]
+		})
+
+		const rightDownEdge = this.graph.addEdge({
+			...edgeSetting,
+			source: rightNode,
+			target: finishNode,
+			vertices: [
+        { x: 400, y: 350 },
+      ]
 		})
 
 		// add child nodes, edges to containerNode
@@ -91,7 +125,6 @@ class Interaction {
 		containerNode.addChild(leftNode);
 		containerNode.addChild(rightNode);
 		containerNode.addChild(finishNode);
-		containerNode.addChild(edge1);
 
 		// trigger of add parallel node event 
 		this.graph.trigger("AddParallel");

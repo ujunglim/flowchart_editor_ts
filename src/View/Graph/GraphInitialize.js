@@ -28,7 +28,7 @@ export default function GraphInitialize(graph) {
   const target = graph.addNode({
     ...nodeSetting,
     x: 350,
-    y: 160,
+    y: 140,
     attrs: {
       label: {
         text: "结束"
@@ -38,12 +38,12 @@ export default function GraphInitialize(graph) {
 
   // listener of add parallel node event 
   graph.on("AddParallel", () => {
-    target.translate(undefined, 200);
+    target.translate(undefined, 250);
   })
 
   // listener of delete parallel node event 
   graph.on("DeleteParallel", () => {
-    target.translate(undefined, -200);
+    target.translate(undefined, -250);
   })
 
   const plusNode = graph.addNode({

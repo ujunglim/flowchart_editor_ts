@@ -28,7 +28,7 @@ export class PolygonFinishNode {
 		this.width = 210;
 		this.height = 50;
 		this.x = x + (width - this.width)/2;
-		this.y = y + 230;
+		this.y = y + 270;
 		this.shape = 'react-shape';
 		this.id = "polygonFinishNode";
 		this.component = <Polygon fillColor={"none"} strokeColor={"#1890FF"} strokeWidth={"1px"}>并行结束</Polygon>

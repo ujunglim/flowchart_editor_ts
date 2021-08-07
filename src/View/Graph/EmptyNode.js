@@ -33,7 +33,7 @@ export class EmptyParallelNode {
     this.width = 250;
     this.height = 70;
     this.x = x;
-    this.y = 225;
+    this.y = 250;
     this.shape = "react-shape";
     this.id = id;
     this.component = (node) => (
