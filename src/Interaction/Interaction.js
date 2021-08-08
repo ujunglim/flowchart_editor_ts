@@ -17,18 +17,38 @@ class Interaction {
 				if(dropBBox.isIntersectWithRect(emptyBBox) && node.getChildCount() === 0) {
 					// get title and group of dropping node
 					const {title, group} = droppingNode.getData();
-					let newNode = null;
 
 					// 判断 relation or service node
 					if(group === "service") {
-						newNode = this.addServiceNode(node, title);
+						this.addServiceNode(node, title);
 					}
 					else if(group === "relation") {
-						newNode = this.addParallelNode(node, newNode);
+						this.addParallelNode(node);
 					}
 
 					// remove empty node
 					graph.removeNode(node);
+					return false;
+				}
+			}
+			else if(node.id === 'leftEmpty' || node.id === 'rightEmpty') {
+				const emptyBBox = node.getBBox();
+				const dropBBox = droppingNode.getBBox();
+
+				// 判断交叉，有没有child
+				if(dropBBox.isIntersectWithRect(emptyBBox) && node.getChildCount() === 0) {
+					// get title and group of dropping node
+					const {title, group} = droppingNode.getData();
+
+					// 判断 relation or service node
+					if(group === "service") {
+						this.addServiceNode(node, title);
+						// remove empty node
+						graph.removeNode(node);
+					}
+					else if(group === "relation") {
+						alert('Only Service Node is available at here.')
+					}
 					return false;
 				}
 			}
@@ -61,8 +81,8 @@ class Interaction {
 
 		// add nodes of parallel tree
 		const startNode = this.graph.addNode(startInstance);
-		const leftNode = this.graph.addNode(new EmptyParallelNode(120, 'leftParallelNode', () => {console.log("delete ")}));
-		const rightNode = this.graph.addNode(new EmptyParallelNode(380, 'rightParallelNode'));
+		const leftNode = this.graph.addNode(new EmptyParallelNode(120, 'leftEmpty', () => {console.log("delete ")}));
+		const rightNode = this.graph.addNode(new EmptyParallelNode(380, 'rightEmpty'));
 		const finishNode = this.graph.addNode(finishInstance);
 
 		// 根据 oldNode 拿到他的 edges
