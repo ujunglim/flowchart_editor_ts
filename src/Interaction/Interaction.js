@@ -155,8 +155,20 @@ class Interaction {
 	}
 
 	deleteServiceNode(serviceNode) {
-		// add new emptyNode
-		const newEmptyNode = this.graph.addNode(new EmptyNode());
+		const id = serviceNode.id;
+		let newEmptyNode = null;
+
+		// add new empty node
+		if(id === 'emptyService') {
+			newEmptyNode = this.graph.addNode(new EmptyNode());
+		}
+		else if(id === 'leftEmptyService') {
+			newEmptyNode = this.graph.addNode(new EmptyParallelNode(120, 'leftEmpty'));
+		}
+		else if(id === 'rightEmptyService') {
+			newEmptyNode = this.graph.addNode(new EmptyParallelNode(380, 'rightEmpty'));
+		}
+
 
 		// get in, out edges of service node, then reconnect with newEmptyNode
 		this.graph.getIncomingEdges(serviceNode)[0].setTarget(newEmptyNode);

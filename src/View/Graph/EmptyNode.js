@@ -2,22 +2,11 @@ import styled from 'styled-components';
 import EditableNode from './EditableNode';
 
 export class EmptyNode {
-  constructor(deleteNode) {
+  constructor() {
     this.width = 250;
     this.height = 70;
-
-    if(deleteNode) {
-      // 居中
-      const {x, y} = deleteNode.position();
-      const {width} = deleteNode.size();
-      this.x = x + (width - this.width)/2;
-      this.y = y;
-    }
-    else {
-      this.x = 250;
-      this.y = 125;
-    }
-
+    this.x = 250;
+    this.y = 125;
     this.shape = "react-shape";
     this.id = "empty";
     this.component = (node) => (
@@ -29,7 +18,7 @@ export class EmptyNode {
 }
 
 export class EmptyParallelNode {
-  constructor(x, id, onDelete) {
+  constructor(x, id) {
     this.width = 250;
     this.height = 70;
     this.x = x;
@@ -37,7 +26,7 @@ export class EmptyParallelNode {
     this.shape = "react-shape";
     this.id = id;
     this.component = (node) => (
-      <EditableNode onDelete={() => {onDelete()}}>
+      <EditableNode>
         <Empty>请将左侧服务拖入框内</Empty>
       </EditableNode> 
     )
