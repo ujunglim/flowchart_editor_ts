@@ -36,7 +36,6 @@ export default function GraphComp({ graphRef }) {
 
 //============ styled components ==============
 const GraphContainer = styled.div`
-  border: 3px solid lightgrey;
-  border-radius: 10px;
-  box-shadow: 0 8px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid lightgrey;
+  border-right: none;
 `;
