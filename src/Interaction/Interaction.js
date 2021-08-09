@@ -68,11 +68,16 @@ class Interaction {
 		// get in and out edge of empty node, then reconnect with new polygon node
 		incomingEdge.setTarget(serviceNode);
 		outgoingEdge.setSource(serviceNode);
+
+		// trigger AddParallelService event, and pass serviceNode
+		if(oldNode.id !== 'empty') {
+			this.graph.trigger('AddParallelService', serviceNode);
+		}
 	}
 
 	addParallelNode(oldNode) {
 		// create container node, 用来一次性 delete 整个 parallel node 树
-		const containerNode = this.graph.addNode({})
+		const containerNode = this.graph.addNode({});
 
 		// 创建新的 poly instances，根据 oldNode 剧中他们
 		const startInstance = new PolygonStartNode(oldNode, 
@@ -81,7 +86,7 @@ class Interaction {
 
 		// add nodes of parallel tree
 		const startNode = this.graph.addNode(startInstance);
-		const leftNode = this.graph.addNode(new EmptyParallelNode(120, 'leftEmpty', () => {console.log("delete ")}));
+		const leftNode = this.graph.addNode(new EmptyParallelNode(120, 'leftEmpty'));
 		const rightNode = this.graph.addNode(new EmptyParallelNode(380, 'rightEmpty'));
 		const finishNode = this.graph.addNode(finishInstance);
 
@@ -149,6 +154,11 @@ class Interaction {
 		containerNode.addChild(rightUpEdge);
 		containerNode.addChild(leftDownEdge);
 		containerNode.addChild(rightDownEdge);
+
+		// listen AddParallelService, and add serviceNode to containerNode
+		this.graph.on("AddParallelService", (serviceNode) => {
+			containerNode.addChild(serviceNode);
+		})
 
 		// trigger of add parallel node event 
 		this.graph.trigger("AddParallel");

@@ -23,7 +23,7 @@ export default function GraphComp({ graphRef }) {
       // },
       background: { color: '#F7FBFF' },
       interacting: {
-        nodeMovable: false
+        nodeMovable: true
       },
       // embedding: {
       //   enabled: true
