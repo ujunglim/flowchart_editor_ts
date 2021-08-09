@@ -2,15 +2,9 @@ import styled from "styled-components";
 import StencilGroup_base from "./StencilGroup_base";
 
 export default class StencilGroup_service extends StencilGroup_base {
-  constructor() {
+  constructor(services) {
     super();
-    this.titles = [
-      "人脸相关能力",
-      "text_lang",
-      "文本校对",
-      "IFOCR",
-      "测试自定义用例"
-    ];
+    this.titles = services;
     this.groupName = "讯飞服务";
     this.Component = ServiceNode;
     this.init("service");

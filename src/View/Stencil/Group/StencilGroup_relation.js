@@ -2,9 +2,9 @@ import styled from "styled-components";
 import StencilGroup_base from "./StencilGroup_base";
 
 export default class StencilGroup_relation extends StencilGroup_base {
-  constructor() {
+  constructor(relations) {
     super();
-    this.titles = ["并行节点", "条件节点"];
+    this.titles = relations;
     this.groupName = "关系节点";
     this.Component = RelationNode;
     this.init("relation");

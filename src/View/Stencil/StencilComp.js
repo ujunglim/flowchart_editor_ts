@@ -2,11 +2,10 @@ import { Addon } from "@antv/x6";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import interaction from "../../Interaction/Interaction";
-
 import StencilGroup_relation from "./Group/StencilGroup_relation";
 import StencilGroup_service from "./Group/StencilGroup_service";
 
-export default function StencilComp({ graphRef, stencilRef }) {
+export default function StencilComp({ graphRef, stencilRef, relations, services }) {
   const container = useRef(null);
 
   useEffect(() => {
@@ -31,8 +30,7 @@ export default function StencilComp({ graphRef, stencilRef }) {
         dy: 0,
         center: true,
         columnWidth: 200,
-        rowHeight: 50,
-
+        rowHeight: 50
       },
       stencilGraphOptions: {
         background: {color: '#ffffff',}
@@ -55,10 +53,10 @@ export default function StencilComp({ graphRef, stencilRef }) {
     container.current.appendChild(stencil.container);
 
     // add service, relation group to stencil
-    const serviceGroup = new StencilGroup_service();
+    const serviceGroup = new StencilGroup_service(services);
     serviceGroup.load(stencil);
 
-    const relationGroup = new StencilGroup_relation();
+    const relationGroup = new StencilGroup_relation(relations);
     relationGroup.load(stencil);
   }, []);
 

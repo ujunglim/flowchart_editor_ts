@@ -7,7 +7,7 @@ import StencilComp from "./View/Stencil/StencilComp";
 
 const GRAPH_1 = "GRAPH_1";
 
-export default function GraphEditor() {
+export default function GraphEditor({relations, services}) {
   const [Portal, setPortalGraph] = usePortal(GRAPH_1);
   const graphRef = useRef(null);
   const stencilRef = useRef(null);
@@ -21,7 +21,7 @@ export default function GraphEditor() {
     <DIV>
       <GlobalStyle />
       <GraphComp graphRef={graphRef} />
-      <StencilComp graphRef={graphRef} stencilRef={stencilRef} />
+      <StencilComp graphRef={graphRef} stencilRef={stencilRef} relations={relations} services={services} />
     </DIV>
   );
 }
