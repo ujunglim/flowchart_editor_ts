@@ -1,29 +1,52 @@
-import { DownOutlined } from "@ant-design/icons";
-import { Menu } from "antd";
+import { Form, Input, InputNumber, Menu, Radio } from "antd";
 import styled from "styled-components";
+import "antd/dist/antd.css";
+import { DownOutlined } from "@ant-design/icons";
+import { useState } from "react";
 
 const { SubMenu } = Menu;
 
 export default function Inspector() {
+	const [radioValue, setRadioValue] = useState("合并通行(JoinAll)");
+	const plainOptions = ["合并通行(JoinAll)", "最快通行(JoinOne)"];
 
-	const onClick = () => console.log("click dropdown")
+	const onChange = (evt) => {
+		setRadioValue(evt.target.value);
+	}
 
 	return(
 		<InspectorDIV>
 			<Header>关系配置</Header>
 			<Menu
-				onClick={onClick}
-        style={{ padding: "5px", background: "pink" }}
-        defaultOpenKeys={['路线']}
+        defaultOpenKeys={['pass','route']}
         mode="inline"
 			>
-				<SubMenu key="路线" title="路线" icon={<DownOutlined />}>
+				<FORM initialValues={{"nodeName": "并行节点1"}}>
+					<Form.Item label="节点名称" name="nodeName">
+						<Input placeholder="请填写节点名称"></Input>
+					</Form.Item>
+				</FORM>
 
-					<div style={{dispay: "flex", flexDirection: "row", background: "coral"}}>
-						<Menu.Item>线路数:</Menu.Item>
-						<input type="text"></input>
-					</div>
-					
+				<SubMenu key="pass" title="通行" icon={<DownOutlined />}>
+					<FORM>
+						<Form.Item label="通行方式">
+							<Radio.Group
+								options={plainOptions}
+								onChange={onChange}
+								value={radioValue}
+								optionType="button"
+								buttonStyle="solid"
+							/>
+						</Form.Item>
+					</FORM>
+				</SubMenu>
+
+				<SubMenu key="route" title="路线" icon={<DownOutlined />}>
+					<FORM initialValues={{"routeNum": 2}}>
+						<Form.Item label="线路数" name="routeNum" >
+							<InputNumber min={2}/>
+						</Form.Item>
+					</FORM>
 				</SubMenu>
 			</Menu>
 
@@ -43,4 +66,9 @@ const Header = styled.div`
 	height: 45px;
 	padding: 10px 20px;
 	border-bottom: 1px solid lightgrey;
+`;
+
+const FORM = styled(Form)`
+	padding: 4px 16px;
+	background: white;
 `;
