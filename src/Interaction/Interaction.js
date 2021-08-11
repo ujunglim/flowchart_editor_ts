@@ -31,7 +31,7 @@ class Interaction {
 					return false;
 				}
 			}
-			else if(node.id === 'leftEmpty' || node.id === 'rightEmpty') {
+			else if(node.id === 'emptyParallel_1' || node.id === 'emptyParallel_2') {
 				const emptyBBox = node.getBBox();
 				const dropBBox = droppingNode.getBBox();
 
@@ -86,9 +86,10 @@ class Interaction {
 
 		// add nodes of parallel tree
 		const startNode = this.graph.addNode(startInstance);
-		const leftNode = this.graph.addNode(new EmptyParallelNode(120, 'leftEmpty'));
-		const rightNode = this.graph.addNode(new EmptyParallelNode(380, 'rightEmpty'));
 		const finishNode = this.graph.addNode(finishInstance);
+
+		const parallelNode_1 = this.graph.addNode(new EmptyParallelNode(120, 'emptyParallel_1'));
+		const parallelNode_2 = this.graph.addNode(new EmptyParallelNode(380, 'emptyParallel_2'));
 
 		// 根据 oldNode 拿到他的 edges
 		const incomingEdge = this.graph.getIncomingEdges(oldNode)[0];
@@ -109,51 +110,43 @@ class Interaction {
 			}
 		}
 
-		const leftUpEdge = this.graph.addEdge({
+		const parallelEdgeUp_1 = this.graph.addEdge({
 			...edgeSetting,
 			source: startNode,
-			target: leftNode,
-			vertices: [
-        { x: 300, y: 220 },
-      ]
+			target: parallelNode_1,
+			vertices: [{ x: 300, y: 220 }]
 		})
 
-		const rightUpEdge = this.graph.addEdge({
+		const parallelEdgeUp_2 = this.graph.addEdge({
 			...edgeSetting,
 			source: startNode,
-			target: rightNode,
-			vertices: [
-        { x: 400, y: 220 },
-      ]
+			target: parallelNode_2,
+			vertices: [{ x: 400, y: 220 }]
 		})
 
-		const leftDownEdge = this.graph.addEdge({
+		const parallelEdgeDown_1 = this.graph.addEdge({
 			...edgeSetting,
-			source: leftNode,
+			source: parallelNode_1,
 			target: finishNode,
-			vertices: [
-        { x: 300, y: 350 },
-      ]
+			vertices: [{ x: 300, y: 350 }]
 		})
 
-		const rightDownEdge = this.graph.addEdge({
+		const parallelEdgeDown_2 = this.graph.addEdge({
 			...edgeSetting,
-			source: rightNode,
+			source: parallelNode_2,
 			target: finishNode,
-			vertices: [
-        { x: 400, y: 350 },
-      ]
+			vertices: [{ x: 400, y: 350 }]
 		})
 
 		// add child nodes, edges to containerNode
 		containerNode.addChild(startNode);
-		containerNode.addChild(leftNode);
-		containerNode.addChild(rightNode);
+		containerNode.addChild(parallelNode_1);
+		containerNode.addChild(parallelNode_2);
 		containerNode.addChild(finishNode);
-		containerNode.addChild(leftUpEdge);
-		containerNode.addChild(rightUpEdge);
-		containerNode.addChild(leftDownEdge);
-		containerNode.addChild(rightDownEdge);
+		containerNode.addChild(parallelEdgeUp_1);
+		containerNode.addChild(parallelEdgeUp_2);
+		containerNode.addChild(parallelEdgeDown_1);
+		containerNode.addChild(parallelEdgeDown_2);
 
 		// listen AddParallelService, and add serviceNode to containerNode
 		this.graph.on("AddParallelService", (serviceNode) => {
@@ -169,14 +162,14 @@ class Interaction {
 		let newEmptyNode = null;
 
 		// add new empty node
-		if(id === 'emptyService') {
+		if(id === 'empty_Service') {
 			newEmptyNode = this.graph.addNode(new EmptyNode());
 		}
-		else if(id === 'leftEmptyService') {
-			newEmptyNode = this.graph.addNode(new EmptyParallelNode(120, 'leftEmpty'));
+		else if(id === 'emptyParallel_1_Service') {
+			newEmptyNode = this.graph.addNode(new EmptyParallelNode(120, 'emptyParallel_1'));
 		}
-		else if(id === 'rightEmptyService') {
-			newEmptyNode = this.graph.addNode(new EmptyParallelNode(380, 'rightEmpty'));
+		else if(id === 'emptyParallel_2_Service') {
+			newEmptyNode = this.graph.addNode(new EmptyParallelNode(380, 'emptyParallel_2'));
 		}
 
 

@@ -11,7 +11,7 @@ export default class ServiceNode {
     this.height = 35;
     this.x = x + (width - this.width)/2;
     this.y = y;
-    this.id = `${emptyNode.id}Service`;
+    this.id = `${emptyNode.id}_Service`;
     this.component = (node) => (
       <EditableNode onDelete={() => onDelete(node)}>
         <SNode>{title}</SNode>
