@@ -31,7 +31,7 @@ class Interaction {
 					return false;
 				}
 			}
-			else if(node.id === 'emptyParallel_1' || node.id === 'emptyParallel_2') {
+			else if(node.id === 'emptyParallel_0' || node.id === 'emptyParallel_1') {
 				const emptyBBox = node.getBBox();
 				const dropBBox = droppingNode.getBBox();
 
@@ -84,12 +84,15 @@ class Interaction {
 			(startNode) => this.deleteParalleleNode(startNode, finishNode, containerNode));
 		const finishInstance = new PolygonFinishNode(oldNode);
 
-		// add nodes of parallel tree
+		// add start, finish nodes
 		const startNode = this.graph.addNode(startInstance);
 		const finishNode = this.graph.addNode(finishInstance);
 
-		const parallelNode_1 = this.graph.addNode(new EmptyParallelNode(120, 'emptyParallel_1'));
-		const parallelNode_2 = this.graph.addNode(new EmptyParallelNode(380, 'emptyParallel_2'));
+		// add parallel nodes
+		const parallelNodes = [];
+		for(let i = 0; i < 2; i++) {
+			parallelNodes.push(this.graph.addNode(new EmptyParallelNode(120 + 260*i, `emptyParallel_${i}`)));
+		}
 
 		// 根据 oldNode 拿到他的 edges
 		const incomingEdge = this.graph.getIncomingEdges(oldNode)[0];
@@ -110,43 +113,35 @@ class Interaction {
 			}
 		}
 
-		const parallelEdgeUp_1 = this.graph.addEdge({
-			...edgeSetting,
-			source: startNode,
-			target: parallelNode_1,
-			vertices: [{ x: 300, y: 220 }]
-		})
+		const parallelUpEdges = [];
+		const parallelDownEdges = [];
 
-		const parallelEdgeUp_2 = this.graph.addEdge({
-			...edgeSetting,
-			source: startNode,
-			target: parallelNode_2,
-			vertices: [{ x: 400, y: 220 }]
-		})
+		for(let i = 0; i < parallelNodes.length; i++) {
+			parallelUpEdges.push(this.graph.addEdge({
+				...edgeSetting,
+				source: startNode,
+				target: parallelNodes[i],
+				vertices: [{x: 300 + 100*i, y: 220}]
+			}));
 
-		const parallelEdgeDown_1 = this.graph.addEdge({
-			...edgeSetting,
-			source: parallelNode_1,
-			target: finishNode,
-			vertices: [{ x: 300, y: 350 }]
-		})
+			parallelDownEdges.push(this.graph.addEdge({
+				...edgeSetting,
+				source: parallelNodes[i],
+				target: finishNode,
+				vertices: [{x: 300 + 100*i, y: 350}]
+			}))
+		}
 
-		const parallelEdgeDown_2 = this.graph.addEdge({
-			...edgeSetting,
-			source: parallelNode_2,
-			target: finishNode,
-			vertices: [{ x: 400, y: 350 }]
-		})
-
-		// add child nodes, edges to containerNode
+		// add start, finish nodes to containerNode
 		containerNode.addChild(startNode);
-		containerNode.addChild(parallelNode_1);
-		containerNode.addChild(parallelNode_2);
 		containerNode.addChild(finishNode);
-		containerNode.addChild(parallelEdgeUp_1);
-		containerNode.addChild(parallelEdgeUp_2);
-		containerNode.addChild(parallelEdgeDown_1);
-		containerNode.addChild(parallelEdgeDown_2);
+
+		// add parallel nodes, edges
+		for(let i = 0; i < parallelNodes.length; i++) {
+			containerNode.addChild(parallelNodes[i]);
+			containerNode.addChild(parallelUpEdges[i]);
+			containerNode.addChild(parallelDownEdges[i]);
+		}
 
 		// listen AddParallelService, and add serviceNode to containerNode
 		this.graph.on("AddParallelService", (serviceNode) => {
@@ -165,13 +160,12 @@ class Interaction {
 		if(id === 'empty_Service') {
 			newEmptyNode = this.graph.addNode(new EmptyNode());
 		}
+		else if(id === 'emptyParallel_0_Service') {
+			newEmptyNode = this.graph.addNode(new EmptyParallelNode(120, 'emptyParallel_0'));
+		}
 		else if(id === 'emptyParallel_1_Service') {
-			newEmptyNode = this.graph.addNode(new EmptyParallelNode(120, 'emptyParallel_1'));
+			newEmptyNode = this.graph.addNode(new EmptyParallelNode(380, 'emptyParallel_1'));
 		}
-		else if(id === 'emptyParallel_2_Service') {
-			newEmptyNode = this.graph.addNode(new EmptyParallelNode(380, 'emptyParallel_2'));
-		}
-
 
 		// get in, out edges of service node, then reconnect with newEmptyNode
 		this.graph.getIncomingEdges(serviceNode)[0].setTarget(newEmptyNode);
@@ -179,7 +173,6 @@ class Interaction {
 
 		// delete service node
 		this.graph.removeNode(serviceNode);
-
 	}
 
 	deleteParalleleNode(startNode, finishNode, containerNode) {
