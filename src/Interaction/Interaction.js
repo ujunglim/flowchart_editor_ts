@@ -3,6 +3,11 @@ import { PolygonFinishNode, PolygonStartNode } from "../View/Graph/PolygonNode";
 import ServiceNode from '../View/Graph/ServiceNode';
 
 class Interaction {
+	constructor() {
+		// create container node, 用来一次性 delete 整个 parallel node 树
+		this.containerNode = null;
+	}
+
 	// 只是检查 true or false 能不能放node
 	validateNode(droppingNode, options, graph) {
 		this.graph = graph;
@@ -76,12 +81,12 @@ class Interaction {
 	}
 
 	addParallelNode(oldNode) {
-		// create container node, 用来一次性 delete 整个 parallel node 树
-		const containerNode = this.graph.addNode({});
+		// container node is invisible
+		this.containerNode = this.graph.addNode({});
 
 		// 创建新的 poly instances，根据 oldNode 剧中他们
 		const startInstance = new PolygonStartNode(oldNode, 
-			(startNode) => this.deleteParalleleNode(startNode, finishNode, containerNode));
+			(startNode) => this.deleteParalleleNode(startNode, finishNode));
 		const finishInstance = new PolygonFinishNode(oldNode);
 
 		// add start, finish nodes
@@ -133,19 +138,19 @@ class Interaction {
 		}
 
 		// add start, finish nodes to containerNode
-		containerNode.addChild(startNode);
-		containerNode.addChild(finishNode);
+		this.containerNode.addChild(startNode);
+		this.containerNode.addChild(finishNode);
 
 		// add parallel nodes, edges
 		for(let i = 0; i < parallelNodes.length; i++) {
-			containerNode.addChild(parallelNodes[i]);
-			containerNode.addChild(parallelUpEdges[i]);
-			containerNode.addChild(parallelDownEdges[i]);
+			this.containerNode.addChild(parallelNodes[i]);
+			this.containerNode.addChild(parallelUpEdges[i]);
+			this.containerNode.addChild(parallelDownEdges[i]);
 		}
 
 		// listen AddParallelService, and add serviceNode to containerNode
 		this.graph.on("AddParallelService", (serviceNode) => {
-			containerNode.addChild(serviceNode);
+			this.containerNode.addChild(serviceNode);
 		})
 
 		// trigger of add parallel node event 
@@ -162,9 +167,13 @@ class Interaction {
 		}
 		else if(id === 'emptyParallel_0_Service') {
 			newEmptyNode = this.graph.addNode(new EmptyParallelNode(120, 'emptyParallel_0'));
+			// add new emptyNode to containerNode
+			this.containerNode.addChild(newEmptyNode);
 		}
 		else if(id === 'emptyParallel_1_Service') {
 			newEmptyNode = this.graph.addNode(new EmptyParallelNode(380, 'emptyParallel_1'));
+			// add new emptyNode to containerNode
+			this.containerNode.addChild(newEmptyNode);
 		}
 
 		// get in, out edges of service node, then reconnect with newEmptyNode
@@ -175,7 +184,7 @@ class Interaction {
 		this.graph.removeNode(serviceNode);
 	}
 
-	deleteParalleleNode(startNode, finishNode, containerNode) {
+	deleteParalleleNode(startNode, finishNode) {
 		// add new emptyNode
 		const newEmptyNode = this.graph.addNode(new EmptyNode());
 
@@ -184,7 +193,7 @@ class Interaction {
 		this.graph.getOutgoingEdges(finishNode)[0].setSource(newEmptyNode);
 
 		// delete containerNode
-		this.graph.removeNode(containerNode);
+		this.graph.removeNode(this.containerNode);
 
 		// trigger of delete parallel node event
 		this.graph.trigger("DeleteParallel");
