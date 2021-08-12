@@ -3,21 +3,31 @@ import styled from "styled-components";
 import "antd/dist/antd.css";
 import { DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { minus, plus } from "../../Redux/reducer";
 
 const { SubMenu } = Menu;
 
 export default function Inspector() {
 	const [radioValue, setRadioValue] = useState("合并通行(JoinAll)");
 	const plainOptions = ["合并通行(JoinAll)", "最快通行(JoinOne)"];
-	const [routeNum, setRouteNum] = useState(2);
 
 	const onChangeRadio = (evt) => {
 		setRadioValue(evt.target.value);
 	}
 
+	let routeNum = useSelector((state) => state.routeNum);
+	const dispatch = useDispatch();
+
 	const onChangeInput = (value) => {
-		console.log(value);
-		setRouteNum(value);
+		// compare previous routeNum, current routeNum
+		if(routeNum < value) {
+			dispatch(plus());
+		}
+		else if(routeNum > value) {
+			dispatch(minus());
+		}
+		routeNum = value;
 	}
 
 	return(

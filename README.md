@@ -13,4 +13,6 @@ npm i antd
 npm i @ant-design/icons
 
 npm i gh-pages
+npm install redux
+npm install react-redux
 ```
