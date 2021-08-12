@@ -4,7 +4,7 @@ import "antd/dist/antd.css";
 import { DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { minus, plus } from "../../Redux/reducer";
+import store, { minus, plus } from "../../Redux/reducer";
 
 const { SubMenu } = Menu;
 
@@ -16,16 +16,20 @@ export default function Inspector() {
 		setRadioValue(evt.target.value);
 	}
 
-	let routeNum = useSelector((state) => state.routeNum);
-	const dispatch = useDispatch();
+	// let routeNum = useSelector((state) => state.routeNum);
+	let routeNum = store.getState().routeNum;
+	// const dispatch = useDispatch();
 
 	const onChangeInput = (value) => {
 		// compare previous routeNum, current routeNum
 		if(routeNum < value) {
-			dispatch(plus());
+			// dispatch(plus());
+			store.dispatch({type: "PLUS"})
 		}
 		else if(routeNum > value) {
-			dispatch(minus());
+			// dispatch(minus());
+			store.dispatch({type: "MINUS"})
+
 		}
 		routeNum = value;
 	}

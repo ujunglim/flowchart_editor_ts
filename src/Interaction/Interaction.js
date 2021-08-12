@@ -1,3 +1,4 @@
+import store from "../Redux/reducer";
 import { EmptyNode, EmptyParallelNode } from "../View/Graph/EmptyNode";
 import { PolygonFinishNode, PolygonStartNode } from "../View/Graph/PolygonNode";
 import ServiceNode from '../View/Graph/ServiceNode';
@@ -92,6 +93,10 @@ class Interaction {
 		// add start, finish nodes
 		const startNode = this.graph.addNode(startInstance);
 		const finishNode = this.graph.addNode(finishInstance);
+
+		// ====== redux ================
+		const a = store.getState().routeNum;
+		console.log(a)
 
 		// add parallel nodes
 		const parallelNodes = [];

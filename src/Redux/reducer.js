@@ -1,3 +1,4 @@
+import { createStore } from "redux";
 
 const PLUS = 'PLUS';
 const MINUS = 'MINUS';
@@ -24,4 +25,6 @@ const reducer = (state = initialState, action) => {
 	}
 }
 
-export default reducer;
+
+const store = createStore(reducer);
+export default store;
