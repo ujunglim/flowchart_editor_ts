@@ -3,33 +3,30 @@ import styled from "styled-components";
 import "antd/dist/antd.css";
 import { DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import store, { minus, plus } from "../../Redux/reducer";
+import { connect } from "react-redux";
+import store from "../../Redux/reducer";
 
 const { SubMenu } = Menu;
 
-export default function Inspector() {
+function Inspector(props) {
 	const [radioValue, setRadioValue] = useState("合并通行(JoinAll)");
 	const plainOptions = ["合并通行(JoinAll)", "最快通行(JoinOne)"];
+
+	console.log(props.state)
 
 	const onChangeRadio = (evt) => {
 		setRadioValue(evt.target.value);
 	}
 
-	// let routeNum = useSelector((state) => state.routeNum);
 	let routeNum = store.getState().routeNum;
-	// const dispatch = useDispatch();
 
 	const onChangeInput = (value) => {
 		// compare previous routeNum, current routeNum
 		if(routeNum < value) {
-			// dispatch(plus());
 			store.dispatch({type: "PLUS"})
 		}
 		else if(routeNum > value) {
-			// dispatch(minus());
 			store.dispatch({type: "MINUS"})
-
 		}
 		routeNum = value;
 	}
@@ -74,6 +71,16 @@ export default function Inspector() {
 
 	);
 }
+
+// get current state from store
+function getCurrentState(state, ownProps) {
+	console.log(state, ownProps);
+	return {state};
+}
+
+// get state from store, then give to Inspector component
+export default connect(getCurrentState)(Inspector);
+
 
 //============= Styled Components ===============
 const InspectorDIV = styled.div`
