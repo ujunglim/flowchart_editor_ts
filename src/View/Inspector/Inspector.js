@@ -23,10 +23,10 @@ function Inspector(props) {
 	const onChangeInput = (value) => {
 		// compare previous routeNum, current routeNum
 		if(routeNum < value) {
-			store.dispatch({type: "PLUS"})
+			store.dispatch({type: "PLUS"});
 		}
 		else if(routeNum > value) {
-			store.dispatch({type: "MINUS"})
+			store.dispatch({type: "MINUS"});
 		}
 		routeNum = value;
 	}
