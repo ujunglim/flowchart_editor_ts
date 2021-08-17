@@ -13,10 +13,10 @@ const minus = createAction("MINUS");
 const reducer = (state = initialState, action) => {
 	switch(action.type) {
 		case plus.type:
-			console.log('+');
+			// console.log('+');
 			return {routeNum: state.routeNum + 1}
 		case minus.type:
-			console.log('-')
+			// console.log('-')
 			return {routeNum: state.routeNum - 1}
 		default:
 			return state;

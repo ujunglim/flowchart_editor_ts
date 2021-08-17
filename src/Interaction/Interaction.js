@@ -94,25 +94,12 @@ class Interaction {
 		const startNode = this.graph.addNode(startInstance);
 		const finishNode = this.graph.addNode(finishInstance);
 
-		// ====== redux ================
-		const a = store.getState().routeNum;
-		console.log(a)
-
-		// add parallel nodes
-		const parallelNodes = [];
-		for(let i = 0; i < 2; i++) {
-			parallelNodes.push(this.graph.addNode(new EmptyParallelNode(120 + 260*i, `emptyParallel_${i}`)));
-		}
-
-		// 根据 oldNode 拿到他的 edges
-		const incomingEdge = this.graph.getIncomingEdges(oldNode)[0];
-		const outgoingEdge = this.graph.getOutgoingEdges(oldNode)[0];
-
-		// get in and out edge of empty node, then reconnect with start, finish nodes
-		incomingEdge.setTarget(startNode);
-		outgoingEdge.setSource(finishNode);
-
-		// add edges
+		// ================== default parallel nodes, edges ================
+		let routeNum = 2; //default number of router
+		let parallelNodes = [];
+		let parallelUpEdges = [];
+		let parallelDownEdges = [];
+		// default setting of parallel edges  
 		const edgeSetting = {
 			router: 'orth',
 			attrs: {
@@ -123,12 +110,13 @@ class Interaction {
 			}
 		}
 
-		const parallelUpEdges = [];
-		const parallelDownEdges = [];
-
-		for(let i = 0; i < parallelNodes.length; i++) {
+		for(let i = 0; i < 2; i++) {
+			// nodes
+			parallelNodes.push(this.graph.addNode(new EmptyParallelNode(120 + 260*i, `emptyParallel_${i}`)));
+			// edges
 			parallelUpEdges.push(this.graph.addEdge({
 				...edgeSetting,
+				id: `upEdge_${i}`,
 				source: startNode,
 				target: parallelNodes[i],
 				vertices: [{x: 300 + 100*i, y: 220}]
@@ -136,22 +124,90 @@ class Interaction {
 
 			parallelDownEdges.push(this.graph.addEdge({
 				...edgeSetting,
+				id: `downEdge_${i}`,
 				source: parallelNodes[i],
 				target: finishNode,
 				vertices: [{x: 300 + 100*i, y: 350}]
 			}))
-		}
 
-		// add start, finish nodes to containerNode
-		this.containerNode.addChild(startNode);
-		this.containerNode.addChild(finishNode);
-
-		// add parallel nodes, edges
-		for(let i = 0; i < parallelNodes.length; i++) {
+			// add to containerNode
 			this.containerNode.addChild(parallelNodes[i]);
 			this.containerNode.addChild(parallelUpEdges[i]);
 			this.containerNode.addChild(parallelDownEdges[i]);
 		}
+
+		// ===================== change on parallel nodes, edges ===========================
+		const onChangeRouteNum = () => {
+			// get routeNum from redux store
+			routeNum = store.getState().routeNum;
+
+			// reset previous parallelNodes, edges
+			parallelNodes = [];
+			parallelUpEdges = [];
+			parallelDownEdges = [];
+
+			// add parallel nodes and edges
+			for(let i = 0; i < routeNum; i++) {
+				// nodes
+				parallelNodes.push(this.graph.addNode(new EmptyParallelNode(120 + 260*i, `emptyParallel_${i}`)));
+
+				// edges
+				parallelUpEdges.push(this.graph.addEdge({
+					...edgeSetting,
+					id: `upEdge_${i}`,
+					source: startNode,
+					target: parallelNodes[i],
+					vertices: [{x: 300 + 100*i, y: 220}],
+					attrs: {
+						line: {
+							stroke: "#1890FF",
+							sourceMarker: "circle"
+						}
+					}
+				}));
+
+				parallelDownEdges.push(this.graph.addEdge({
+					...edgeSetting,
+					id: `downEdge_${i}`,
+					source: parallelNodes[i],
+					target: finishNode,
+					vertices: [{x: 300 + 100*i, y: 350}],
+					attrs: {
+						line: {
+							stroke: "#1890FF",
+							sourceMarker: "circle"
+						}
+					}
+				}))
+			}
+
+			// console.log(routeNum);
+			// console.log(parallelNodes);
+			// console.log(parallelUpEdges);
+			// console.log(parallelDownEdges);
+			// console.log(this.graph.getNodes());
+			// console.log(this.graph.getEdges());
+
+			// add parallel nodes, edges to containerNode
+			for(let i = 0; i < routeNum; i++) {
+				this.containerNode.addChild(parallelNodes[i]);
+				this.containerNode.addChild(parallelUpEdges[i]);
+				this.containerNode.addChild(parallelDownEdges[i]);
+			}
+		}
+		store.subscribe(onChangeRouteNum);
+
+		// 根据 oldNode 拿到他的 edges
+		const incomingEdge = this.graph.getIncomingEdges(oldNode)[0];
+		const outgoingEdge = this.graph.getOutgoingEdges(oldNode)[0];
+
+		// get in and out edge of empty node, then reconnect with start, finish nodes
+		incomingEdge.setTarget(startNode);
+		outgoingEdge.setSource(finishNode);
+
+		// add start, finish nodes to containerNode
+		this.containerNode.addChild(startNode);
+		this.containerNode.addChild(finishNode);
 
 		// listen AddParallelService, and add serviceNode to containerNode
 		this.graph.on("AddParallelService", (serviceNode) => {

@@ -73,6 +73,7 @@ export default function GraphInitialize(graph) {
 
   graph.addEdge({
     ...edgeAttrs,
+    id: 'edge_init',
     source: plusNode,
     target
   });
@@ -80,20 +81,27 @@ export default function GraphInitialize(graph) {
   graph.on("node:click", ({ node }) => {
     // click plus
     if (node.id === "plus") {
+      // remove edge_init
+      graph.removeNode('edge_init');
+      
       // add emptyNode
       const emptyNode = graph.addNode(new EmptyNode());
       target.translate(undefined, 100);
+
       // plus is invisible
       plusNode.hide();
       // add 上面edge
       graph.addEdge({
         ...edgeAttrs,
+        id: 'upEdge_init',
         source,
         target: emptyNode
       });
+      
       // add 下面edge
       graph.addEdge({
         ...edgeAttrs,
+        id: 'downEdge_init',
         source: emptyNode,
         target
       });

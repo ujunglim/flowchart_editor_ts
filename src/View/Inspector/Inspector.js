@@ -12,7 +12,7 @@ function Inspector(props) {
 	const [radioValue, setRadioValue] = useState("合并通行(JoinAll)");
 	const plainOptions = ["合并通行(JoinAll)", "最快通行(JoinOne)"];
 
-	console.log(props.state)
+	// console.log(props.state)
 
 	const onChangeRadio = (evt) => {
 		setRadioValue(evt.target.value);
@@ -74,7 +74,7 @@ function Inspector(props) {
 
 // get current state from store
 function getCurrentState(state, ownProps) {
-	console.log(state, ownProps);
+	// console.log(state, ownProps);
 	return {state};
 }
 
