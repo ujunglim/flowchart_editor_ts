@@ -37,7 +37,7 @@ class Interaction {
 					return false;
 				}
 			}
-			else if(node.id === 'emptyParallel_0' || node.id === 'emptyParallel_1') {
+			else if(node.id.includes('emptyParallel_')) {
 				const emptyBBox = node.getBBox();
 				const dropBBox = droppingNode.getBBox();
 
@@ -227,13 +227,10 @@ class Interaction {
 		if(id === 'empty_Service') {
 			newEmptyNode = this.graph.addNode(new EmptyNode());
 		}
-		else if(id === 'emptyParallel_0_Service') {
-			newEmptyNode = this.graph.addNode(new EmptyParallelNode(120, 'emptyParallel_0'));
-			// add new emptyNode to containerNode
-			this.containerNode.addChild(newEmptyNode);
-		}
-		else if(id === 'emptyParallel_1_Service') {
-			newEmptyNode = this.graph.addNode(new EmptyParallelNode(380, 'emptyParallel_1'));
+		// add new empty parallel node
+		else if(id.includes('emptyParallel_')) {
+			const i = id.slice(14, 15);
+			newEmptyNode = this.graph.addNode(new EmptyParallelNode(120 + 260*i, `emptyParallel_${i}`));
 			// add new emptyNode to containerNode
 			this.containerNode.addChild(newEmptyNode);
 		}
