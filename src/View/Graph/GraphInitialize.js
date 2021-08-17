@@ -18,6 +18,7 @@ export default function GraphInitialize(graph) {
     ...nodeSetting,
     x: 350,
     y: 30,
+    id: 'source',
     attrs: {
       label: {
         text: "开始"
@@ -29,6 +30,7 @@ export default function GraphInitialize(graph) {
     ...nodeSetting,
     x: 350,
     y: 140,
+    id: 'target',
     attrs: {
       label: {
         text: "结束"

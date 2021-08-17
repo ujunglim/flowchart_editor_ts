@@ -83,7 +83,7 @@ class Interaction {
 
 	addParallelNode(oldNode) {
 		// container node is invisible
-		this.containerNode = this.graph.addNode({});
+		this.containerNode = this.graph.addNode({id: 'container_node'});
 
 		// 创建新的 poly instances，根据 oldNode 剧中他们
 		const startInstance = new PolygonStartNode(oldNode, 
@@ -140,13 +140,16 @@ class Interaction {
 		const onChangeRouteNum = () => {
 			// get routeNum from redux store
 			routeNum = store.getState().routeNum;
-
-			// reset previous parallelNodes, edges
+			
+			// remove previous parallelNodes, edges
+			for(let i = 0; i <= routeNum; i++) {
+				this.graph.removeNode(`emptyParallel_${i}`);
+			}
 			parallelNodes = [];
 			parallelUpEdges = [];
 			parallelDownEdges = [];
 
-			// add parallel nodes and edges
+			// add parallel nodes, edges and addChild to containerNode
 			for(let i = 0; i < routeNum; i++) {
 				// nodes
 				parallelNodes.push(this.graph.addNode(new EmptyParallelNode(120 + 260*i, `emptyParallel_${i}`)));
@@ -178,7 +181,12 @@ class Interaction {
 							sourceMarker: "circle"
 						}
 					}
-				}))
+				}))	
+
+				// addChild to containerNode
+				this.containerNode.addChild(parallelNodes[i]);
+				this.containerNode.addChild(parallelUpEdges[i]);
+				this.containerNode.addChild(parallelDownEdges[i]);
 			}
 
 			// console.log(routeNum);
@@ -187,13 +195,6 @@ class Interaction {
 			// console.log(parallelDownEdges);
 			// console.log(this.graph.getNodes());
 			// console.log(this.graph.getEdges());
-
-			// add parallel nodes, edges to containerNode
-			for(let i = 0; i < routeNum; i++) {
-				this.containerNode.addChild(parallelNodes[i]);
-				this.containerNode.addChild(parallelUpEdges[i]);
-				this.containerNode.addChild(parallelDownEdges[i]);
-			}
 		}
 		store.subscribe(onChangeRouteNum);
 

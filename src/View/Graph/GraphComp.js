@@ -25,6 +25,7 @@ export default function GraphComp({ graphRef }) {
       interacting: {
         nodeMovable: false
       },
+      scroller: true,
       // embedding: {
       //   enabled: true
       // }
