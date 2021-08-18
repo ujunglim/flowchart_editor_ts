@@ -83,7 +83,10 @@ class Interaction {
 
 	addParallelNode(oldNode) {
 		// container node is invisible
-		this.containerNode = this.graph.addNode({id: 'container_node'});
+		this.containerNode = this.graph.addNode({
+			id: 'container_node',
+			width: 100, height: 100
+		});
 
 		// 创建新的 poly instances，根据 oldNode 剧中他们
 		const startInstance = new PolygonStartNode(oldNode, 
@@ -119,16 +122,28 @@ class Interaction {
 				id: `upEdge_${i}`,
 				source: startNode,
 				target: parallelNodes[i],
-				vertices: [{x: 300 + 100*i, y: 220}]
+//==================================================================
+
+				// vertices: [{x: 300 + 140*i, y: 220}]
+				vertices: [{x: 245 + 260*i, y: 220}]
 			}));
+
+			this.graph.addNode({x: 245 + 260*i, y: 220, width: 10, height: 10, attrs:{body:{stroke:"red"}}})
+
 
 			parallelDownEdges.push(this.graph.addEdge({
 				...edgeSetting,
 				id: `downEdge_${i}`,
 				source: parallelNodes[i],
 				target: finishNode,
-				vertices: [{x: 300 + 100*i, y: 350}]
+				// vertices: [{x: 300 + 140*i, y: 350}]
+				vertices: [{x: 365 + 20*i, y: 350}]
 			}))
+
+			// this.graph.addNode({x: 300 + 140*i, y: 350, width: 10, height: 10, attrs:{body:{stroke:"red"}}})
+			this.graph.addNode({x: 365 + 20*i, y: 350, width: 10, height: 10, attrs:{body:{stroke:"red"}}})
+
+//==================================================================
 
 			// add to containerNode
 			this.containerNode.addChild(parallelNodes[i]);
@@ -144,9 +159,25 @@ class Interaction {
 			const action = store.getState().action;
 
 			if(action === "plus") {
-				// nodes
-				parallelNodes.push(this.graph.addNode(new EmptyParallelNode(120 + 260*index, `emptyParallel_${index}`)));
-				// edges
+//==================================================================
+
+				// translate previous nodes, vertices
+				for(let i = 0; i < index; i++) {
+					parallelNodes[i].translate(-130, undefined);
+					// translate vertices
+					parallelUpEdges[i].setVertices([{x: 245 + 260*i - 130, y: 220}]);
+					this.graph.addNode({x: 245 + 260*i - 130, y: 220, width: 10, height: 10, attrs:{body:{stroke:"green"}}})
+
+					parallelDownEdges[i].setVertices([{x: 365 + 10*i - 5, y: 350}]);
+					this.graph.addNode({x: 365 + 10*i - 5, y: 350, width: 10, height: 10, attrs:{body:{stroke:"green"}}})
+//==================================================================
+
+				}
+
+
+
+				// add new node, edges
+				parallelNodes.push(this.graph.addNode(new EmptyParallelNode(120 + 260*index - (routeNum-2)*130, `emptyParallel_${index}`)));
 				parallelUpEdges.push(this.graph.addEdge({
 					...edgeSetting,
 					id: `upEdge_${index}`,
@@ -154,7 +185,6 @@ class Interaction {
 					target: parallelNodes[index],
 					vertices: [{x: 300 + 100*index, y: 220}]
 				}));
-
 				parallelDownEdges.push(this.graph.addEdge({
 					...edgeSetting,
 					id: `downEdge_${index}`,
@@ -169,11 +199,16 @@ class Interaction {
 				this.containerNode.addChild(parallelDownEdges[index]);
 			}
 			else if(action === "minus") {
+				// translate previous nodes
+				for(let i = 0; i < routeNum; i++) {
+					parallelNodes[i].translate(130, undefined);
+				}
+
 				// pop nodes, edges
 				parallelNodes.pop();
 				parallelUpEdges.pop();
 				parallelDownEdges.pop();
-				// remove nodes
+				// remove node
 				this.graph.removeNode(`emptyParallel_${routeNum}`);
 			}
 

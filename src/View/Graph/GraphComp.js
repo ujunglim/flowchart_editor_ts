@@ -12,20 +12,16 @@ export default function GraphComp({ graphRef }) {
       // autoResize: true,
       width: 800,
       height: 700,
-      // grid: {
-      //   size: 10,
-      //   visible: true,
-      //   type: "dot",
-      //   args: {
-      //     color: "grey",  /*#a0a0a0*/
-      //     thickness: 1
-      //   }
-      // },
+      grid: {visible: true},
       background: { color: '#F7FBFF' },
       interacting: {
         nodeMovable: false
       },
-      scroller: true,
+      scroller: {
+        enabled: true,
+        pageVisible: true,
+        pageBreak: true,
+      },
       // embedding: {
       //   enabled: true
       // }
