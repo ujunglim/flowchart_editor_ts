@@ -140,53 +140,41 @@ class Interaction {
 		const onChangeRouteNum = () => {
 			// get routeNum from redux store
 			routeNum = store.getState().routeNum;
-			
-			// remove previous parallelNodes, edges
-			for(let i = 0; i <= routeNum; i++) {
-				this.graph.removeNode(`emptyParallel_${i}`);
-			}
-			parallelNodes = [];
-			parallelUpEdges = [];
-			parallelDownEdges = [];
+			const index = routeNum - 1;
+			const action = store.getState().action;
 
-			// add parallel nodes, edges and addChild to containerNode
-			for(let i = 0; i < routeNum; i++) {
+			if(action === "plus") {
 				// nodes
-				parallelNodes.push(this.graph.addNode(new EmptyParallelNode(120 + 260*i, `emptyParallel_${i}`)));
-
+				parallelNodes.push(this.graph.addNode(new EmptyParallelNode(120 + 260*index, `emptyParallel_${index}`)));
 				// edges
 				parallelUpEdges.push(this.graph.addEdge({
 					...edgeSetting,
-					id: `upEdge_${i}`,
+					id: `upEdge_${index}`,
 					source: startNode,
-					target: parallelNodes[i],
-					vertices: [{x: 300 + 100*i, y: 220}],
-					attrs: {
-						line: {
-							stroke: "#1890FF",
-							sourceMarker: "circle"
-						}
-					}
+					target: parallelNodes[index],
+					vertices: [{x: 300 + 100*index, y: 220}]
 				}));
 
 				parallelDownEdges.push(this.graph.addEdge({
 					...edgeSetting,
-					id: `downEdge_${i}`,
-					source: parallelNodes[i],
+					id: `downEdge_${index}`,
+					source: parallelNodes[index],
 					target: finishNode,
-					vertices: [{x: 300 + 100*i, y: 350}],
-					attrs: {
-						line: {
-							stroke: "#1890FF",
-							sourceMarker: "circle"
-						}
-					}
-				}))	
+					vertices: [{x: 300 + 100*index, y: 350}]
+				}));
 
 				// addChild to containerNode
-				this.containerNode.addChild(parallelNodes[i]);
-				this.containerNode.addChild(parallelUpEdges[i]);
-				this.containerNode.addChild(parallelDownEdges[i]);
+				this.containerNode.addChild(parallelNodes[index]);
+				this.containerNode.addChild(parallelUpEdges[index]);
+				this.containerNode.addChild(parallelDownEdges[index]);
+			}
+			else if(action === "minus") {
+				// pop nodes, edges
+				parallelNodes.pop();
+				parallelUpEdges.pop();
+				parallelDownEdges.pop();
+				// remove nodes
+				this.graph.removeNode(`emptyParallel_${routeNum}`);
 			}
 
 			// console.log(routeNum);
