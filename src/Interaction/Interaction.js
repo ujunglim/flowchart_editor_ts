@@ -123,12 +123,11 @@ class Interaction {
 				source: startNode,
 				target: parallelNodes[i],
 //==================================================================
-
 				// vertices: [{x: 300 + 140*i, y: 220}]
 				vertices: [{x: 245 + 260*i, y: 220}]
 			}));
 
-			this.graph.addNode({x: 245 + 260*i, y: 220, width: 10, height: 10, attrs:{body:{stroke:"red"}}})
+			// this.graph.addNode({x: 245 + 260*i, y: 220, width: 10, height: 10, attrs:{body:{stroke:"red"}}})
 
 
 			parallelDownEdges.push(this.graph.addEdge({
@@ -141,7 +140,7 @@ class Interaction {
 			}))
 
 			// this.graph.addNode({x: 300 + 140*i, y: 350, width: 10, height: 10, attrs:{body:{stroke:"red"}}})
-			this.graph.addNode({x: 365 + 20*i, y: 350, width: 10, height: 10, attrs:{body:{stroke:"red"}}})
+			// this.graph.addNode({x: 365 + 20*i, y: 350, width: 10, height: 10, attrs:{body:{stroke:"red"}}})
 
 //==================================================================
 
@@ -160,31 +159,28 @@ class Interaction {
 
 			if(action === "plus") {
 //==================================================================
-
 				// translate previous nodes, vertices
 				for(let i = 0; i < index; i++) {
 					parallelNodes[i].translate(-130, undefined);
 					// translate vertices
-					parallelUpEdges[i].setVertices([{x: 245 + 260*i - 130, y: 220}]);
-					this.graph.addNode({x: 245 + 260*i - 130, y: 220, width: 10, height: 10, attrs:{body:{stroke:"green"}}})
-
-					parallelDownEdges[i].setVertices([{x: 365 + 10*i - 5, y: 350}]);
-					this.graph.addNode({x: 365 + 10*i - 5, y: 350, width: 10, height: 10, attrs:{body:{stroke:"green"}}})
+					// parallelUpEdges[i].setVertices([{x: 245+260*i - (routeNum-2)*130, y: 220}]);
+					const {x} = parallelUpEdges[i].getVertices()[0];
+					parallelUpEdges[i].setVertices([{x: x - 130, y: 220}]);
 //==================================================================
-
 				}
-
-
-
 				// add new node, edges
 				parallelNodes.push(this.graph.addNode(new EmptyParallelNode(120 + 260*index - (routeNum-2)*130, `emptyParallel_${index}`)));
+				
 				parallelUpEdges.push(this.graph.addEdge({
 					...edgeSetting,
 					id: `upEdge_${index}`,
 					source: startNode,
 					target: parallelNodes[index],
-					vertices: [{x: 300 + 100*index, y: 220}]
+					// vertices: [{x: 300 + 100*index, y: 220}]
+					// vertices: [{x: 245 + 260*(index-1), y: 220}]
+					vertices: [{x: 245 + 260*index-(routeNum-2)*130, y: 220}]
 				}));
+
 				parallelDownEdges.push(this.graph.addEdge({
 					...edgeSetting,
 					id: `downEdge_${index}`,
@@ -202,8 +198,11 @@ class Interaction {
 				// translate previous nodes
 				for(let i = 0; i < routeNum; i++) {
 					parallelNodes[i].translate(130, undefined);
+					// translate vertices
+					const {x} = parallelUpEdges[i].getVertices()[0];
+					parallelUpEdges[i].setVertices([{x: x + 130, y: 220}]);
 				}
-
+				
 				// pop nodes, edges
 				parallelNodes.pop();
 				parallelUpEdges.pop();
