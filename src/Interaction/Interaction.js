@@ -82,6 +82,9 @@ class Interaction {
 	}
 
 	addParallelNode(oldNode) {
+		// open relation setting panel
+		store.dispatch({type: "SET_RELATION", payload: true});
+
 		// container node is invisible
 		this.containerNode = this.graph.addNode({
 			id: 'container_node',
@@ -259,6 +262,9 @@ class Interaction {
 	}
 
 	deleteParalleleNode(startNode, finishNode) {
+		// close relation setting panel
+		store.dispatch({type: "SET_RELATION", payload: false});
+		
 		// add new emptyNode
 		const newEmptyNode = this.graph.addNode(new EmptyNode());
 

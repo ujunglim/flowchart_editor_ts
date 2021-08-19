@@ -31,41 +31,47 @@ function Inspector(props) {
 		routeNum = value;
 	}
 
+	const {setRelation} = store.getState();
+
 	return(
 		<InspectorDIV>
-			<Header>关系配置</Header>
-			<Menu
-        defaultOpenKeys={['sub_pass','sub_route']}
-        mode="inline"
-			>
-				{/* <FORM initialValues={{"nodeName": "并行节点1"}}>
-					<Form.Item label="节点名称" name="nodeName">
-						<Input placeholder="请填写节点名称"></Input>
-					</Form.Item>
-				</FORM>
+			{setRelation && (
+				<>
+					<Header>关系配置</Header>
+					<Menu
+						defaultOpenKeys={['sub_pass','sub_route']}
+						mode="inline"
+					>
+						{/* <FORM initialValues={{"nodeName": "并行节点1"}}>
+							<Form.Item label="节点名称" name="nodeName">
+								<Input placeholder="请填写节点名称"></Input>
+							</Form.Item>
+						</FORM>
 
-				<SubMenu key="sub_pass" title="通行" icon={<DownOutlined />}>
-					<FORM>
-						<Form.Item label="通行方式">
-							<Radio.Group
-								options={plainOptions}
-								onChange={onChangeRadio}
-								value={radioValue}
-								optionType="button"
-								buttonStyle="solid"
-							/>
-						</Form.Item>
-					</FORM>
-				</SubMenu> */}
+						<SubMenu key="sub_pass" title="通行" icon={<DownOutlined />}>
+							<FORM>
+								<Form.Item label="通行方式">
+									<Radio.Group
+										options={plainOptions}
+										onChange={onChangeRadio}
+										value={radioValue}
+										optionType="button"
+										buttonStyle="solid"
+									/>
+								</Form.Item>
+							</FORM>
+						</SubMenu> */}
 
-				<SubMenu key="sub_route" title="路线" icon={<DownOutlined />}>
-					<Menu.Item key="route">
-						线路数:
-						<InputNumber min={2} defaultValue={2} onChange={onChangeInput}/>
-					</Menu.Item>
-				</SubMenu>
-			
-			</Menu>
+						<SubMenu key="sub_route" title="路线" icon={<DownOutlined />}>
+							<Menu.Item key="route">
+								线路数:
+								<InputNumber min={2} defaultValue={2} onChange={onChangeInput}/>
+							</Menu.Item>
+						</SubMenu>
+					
+					</Menu>
+				</>
+			)}
 
 		</InspectorDIV>
 
