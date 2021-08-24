@@ -78,9 +78,6 @@ class Interaction {
 		// trigger AddParallelService event, and pass serviceNode
 		if(oldNode.id !== 'empty') {
 			this.graph.trigger('AddParallelService', serviceNode);
-
-			// close relation setting panel
-			store.dispatch({type: "SET_RELATION", payload: false});
 		}
 	}
 
@@ -91,7 +88,7 @@ class Interaction {
 		// container node is invisible
 		this.containerNode = this.graph.addNode({
 			id: 'container_node',
-			// width: 100, height: 100
+			width: 100, height: 100
 		});
 
 		// 创建新的 poly instances，根据 oldNode 剧中他们
@@ -267,7 +264,7 @@ class Interaction {
 	deleteParalleleNode(startNode, finishNode) {
 		// close relation setting panel
 		store.dispatch({type: "SET_RELATION", payload: false});
-
+		
 		// add new emptyNode
 		const newEmptyNode = this.graph.addNode(new EmptyNode());
 
