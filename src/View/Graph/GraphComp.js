@@ -12,15 +12,15 @@ export default function GraphComp({ graphRef }) {
       // autoResize: true,
       width: 800,
       height: 700,
-      grid: {visible: true},
+      // grid: {visible: true},
       background: { color: '#F7FBFF' },
       interacting: {
         nodeMovable: false
       },
       scroller: {
         enabled: true,
-        pageVisible: true,
-        pageBreak: true,
+        // pageVisible: true,
+        // pageBreak: true,
       },
       // embedding: {
       //   enabled: true
@@ -33,6 +33,6 @@ export default function GraphComp({ graphRef }) {
 
 //============ styled components ==============
 const GraphContainer = styled.div`
-  border: 1px solid lightgrey;
-  border-right: none;
+  // border: 1px solid lightgrey;
+  // border-right: none;
 `;
