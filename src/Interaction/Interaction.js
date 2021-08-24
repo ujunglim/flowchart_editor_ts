@@ -82,6 +82,9 @@ class Interaction {
 			// close relation setting panel
 			store.dispatch({type: "SET_RELATION", payload: false});
 		}
+
+		// remove empty node
+		this.graph.removeNode('empty');
 	}
 
 	addParallelNode(oldNode) {
@@ -206,6 +209,12 @@ class Interaction {
 				// remove node
 				this.graph.removeNode(`emptyParallel_${routeNum}`);
 			}
+			else if(action === 'reset') {
+				// return to default parallel tree
+				parallelNodes = parallelNodes.slice(0, 2);
+				parallelUpEdges = parallelUpEdges.slice(0, 2);
+				parallelDownEdges = parallelDownEdges.slice(0, 2);
+			}
 
 			// console.log(routeNum);
 			// console.log(parallelNodes);
@@ -235,6 +244,9 @@ class Interaction {
 
 		// trigger of add parallel node event 
 		this.graph.trigger("AddParallel");
+
+		// remove empty node
+		this.graph.removeNode('empty');
 	}
 
 	deleteServiceNode(serviceNode) {
@@ -265,6 +277,8 @@ class Interaction {
 	}
 
 	deleteParalleleNode(startNode, finishNode) {
+		// reset routeNum
+		store.dispatch({type: "RESET"});
 		// close relation setting panel
 		store.dispatch({type: "SET_RELATION", payload: false});
 

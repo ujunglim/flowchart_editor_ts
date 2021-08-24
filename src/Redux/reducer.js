@@ -9,7 +9,8 @@ const initialState = {
 // Action creators
 const plus = createAction("PLUS");
 const minus = createAction("MINUS");
-const setRelation = createAction("SET_RELATION")
+const reset = createAction("RESET");
+const setRelation = createAction("SET_RELATION");
 
 // reducer
 const reducer = (state = initialState, action) => {
@@ -20,6 +21,8 @@ const reducer = (state = initialState, action) => {
 		case minus.type:
 			// console.log('-')
 			return {routeNum: state.routeNum - 1, action: "minus", setRelation: true}
+		case reset.type:
+			return {routeNum: 2, action: 'reset'}
 		case setRelation.type:
 			return {routeNum: state.routeNum, setRelation: action.payload}
 		default:
