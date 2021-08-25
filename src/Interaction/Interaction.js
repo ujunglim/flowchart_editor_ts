@@ -2,6 +2,11 @@ import store from "../Redux/reducer";
 import { EmptyNode, EmptyParallelNode } from "../View/Graph/EmptyNode";
 import { PolygonFinishNode, PolygonStartNode } from "../View/Graph/PolygonNode";
 import ServiceNode from '../View/Graph/ServiceNode';
+import { Modal } from "antd";
+import "antd/dist/antd.css";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+
+const { confirm } = Modal;
 
 class Interaction {
 	constructor() {
@@ -64,7 +69,17 @@ class Interaction {
 
 	addServiceNode(oldNode, title) {
 		const serviceNodeSetting = new ServiceNode(oldNode, title, 
-			(currNode) => this.deleteServiceNode(currNode));
+			(currNode) => {
+				confirm({
+					icon: <ExclamationCircleOutlined/>,
+					title: "提示",
+					content: "您确定要删除该节点吗？",
+					onOk: () => {
+						this.deleteServiceNode(currNode);
+					},
+					onCancel: () => {}
+				})
+			});
 		const serviceNode = this.graph.addNode(serviceNodeSetting);
 
 		// 根据 oldNode 拿到他的 edges
@@ -99,7 +114,17 @@ class Interaction {
 
 		// 创建新的 poly instances，根据 oldNode 剧中他们
 		const startInstance = new PolygonStartNode(oldNode, 
-			(startNode) => this.deleteParalleleNode(startNode, finishNode));
+			(startNode) => {
+				confirm({
+					icon: <ExclamationCircleOutlined/>,
+					title: "提示",
+					content: "删除节点时，将同时删除其他节点中的相关数据关系！是否确认删除？",
+					onOk: () => {
+						this.deleteParalleleNode(startNode, finishNode)
+					},
+					onCancel: () => {}
+				})
+			});
 		const finishInstance = new PolygonFinishNode(oldNode);
 
 		// add start, finish nodes
