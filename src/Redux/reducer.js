@@ -1,7 +1,7 @@
 // import { createAction, createReducer } from "@reduxjs/toolkit";
 // import { createStore } from "redux";
 
-import { combineReducers, createSlice, createStore } from "@reduxjs/toolkit";
+import { createSlice, createStore } from "@reduxjs/toolkit";
 
 // const initialState = {
 // 	routeNum: 2,
@@ -37,21 +37,16 @@ import { combineReducers, createSlice, createStore } from "@reduxjs/toolkit";
 // const reducer = createReducer(initialState, (builder) => {
 // 	builder
 // 		.addCase(plus, (state, action) => {
-// 			state.routeNum++;
-// 			state.action = "plus";
-// 			state.setRelation = true;
+// 			return {routeNum: state.routeNum + 1, action: "plus", setRelation: true}
 // 		})
 // 		.addCase(minus, (state, action) => {
-// 			state.routeNum--;
-// 			state.action = "minus";
-// 			state.setRelation = true;
+// 			return {routeNum: state.routeNum - 1, action: "minus", setRelation: true}
 // 		})
 // 		.addCase(reset, (state, action) => {
-// 			state.routeNum = 2;
-// 			state.action = "reset";
+// 			return {routeNum: 2, action: 'reset'}
 // 		})
 // 		.addCase(setRelation, (state, {payload}) => {
-// 			state.setRelation = payload;
+// 			return {routeNum: state.routeNum, setRelation: payload}
 // 		})
 // })
 
@@ -59,21 +54,16 @@ import { combineReducers, createSlice, createStore } from "@reduxjs/toolkit";
 // // reducer with map object notation
 // const reducer = createReducer(initialState, {
 // 	[plus]: (state, action) => {
-// 		state.routeNum++;
-// 		state.action = "plus";
-// 		state.setRelation = true;
+// 		return {routeNum: state.routeNum + 1, action: "plus", setRelation: true}
 // 	},
 // 	[minus]: (state, action) => {
-// 		state.routeNum--;
-// 		state.action = "minus";
-// 		state.setRelation = true;
+// 		return {routeNum: state.routeNum - 1, action: "minus", setRelation: true}
 // 	},
 // 	[reset]: (state, action) => {
-// 		state.routeNum = 2;
-// 		state.action = "reset";
+// 		return {routeNum: 2, action: 'reset'}
 // 	},
 // 	[setRelation] : (state, {payload}) => {
-// 		state.setRelation = payload;
+// 		return {routeNum: state.routeNum, setRelation: payload}
 // 	}
 // })
 
