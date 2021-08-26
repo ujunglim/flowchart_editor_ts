@@ -1,4 +1,4 @@
-import store from "../Redux/reducer";
+import store, { route } from "../Redux/reducer";
 import { EmptyNode, EmptyParallelNode } from "../View/Graph/EmptyNode";
 import { PolygonFinishNode, PolygonStartNode } from "../View/Graph/PolygonNode";
 import ServiceNode from '../View/Graph/ServiceNode';
@@ -74,9 +74,7 @@ class Interaction {
 					icon: <ExclamationCircleOutlined/>,
 					title: "提示",
 					content: "您确定要删除该节点吗？",
-					onOk: () => {
-						this.deleteServiceNode(currNode);
-					},
+					onOk: () => this.deleteServiceNode(currNode),
 					onCancel: () => {}
 				})
 			});
@@ -95,16 +93,18 @@ class Interaction {
 			this.graph.trigger('AddParallelService', serviceNode);
 
 			// close relation setting panel
-			store.dispatch({type: "SET_RELATION", payload: false});
+			// store.dispatch({type: "SET_RELATION", payload: false});
+			store.dispatch(route.actions.setRelation(false));
 		}
 
 		// remove empty node
-		this.graph.removeNode('empty');
+		this.graph.removeNode(oldNode);
 	}
 
 	addParallelNode(oldNode) {
 		// open relation setting panel
-		store.dispatch({type: "SET_RELATION", payload: true});
+		// store.dispatch({type: "SET_RELATION", payload: true});
+		store.dispatch(route.actions.setRelation(true));
 
 		// container node is invisible
 		this.containerNode = this.graph.addNode({
@@ -119,9 +119,7 @@ class Interaction {
 					icon: <ExclamationCircleOutlined/>,
 					title: "提示",
 					content: "删除节点时，将同时删除其他节点中的相关数据关系！是否确认删除？",
-					onOk: () => {
-						this.deleteParalleleNode(startNode, finishNode)
-					},
+					onOk: () => this.deleteParalleleNode(startNode, finishNode),
 					onCancel: () => {}
 				})
 			});
@@ -240,13 +238,8 @@ class Interaction {
 				parallelUpEdges = parallelUpEdges.slice(0, 2);
 				parallelDownEdges = parallelDownEdges.slice(0, 2);
 			}
+			console.log(store.getState());  // why repetetive
 
-			// console.log(routeNum);
-			// console.log(parallelNodes);
-			// console.log(parallelUpEdges);
-			// console.log(parallelDownEdges);
-			// console.log(this.graph.getNodes());
-			// console.log(this.graph.getEdges());
 		}
 		store.subscribe(onChangeRouteNum);
 
@@ -271,7 +264,7 @@ class Interaction {
 		this.graph.trigger("AddParallel");
 
 		// remove empty node
-		this.graph.removeNode('empty');
+		this.graph.removeNode(oldNode);
 	}
 
 	deleteServiceNode(serviceNode) {
@@ -303,9 +296,13 @@ class Interaction {
 
 	deleteParalleleNode(startNode, finishNode) {
 		// reset routeNum
-		store.dispatch({type: "RESET"});
+		// store.dispatch({type: "RESET"});
+		store.dispatch(route.actions.reset());
+
+
 		// close relation setting panel
-		store.dispatch({type: "SET_RELATION", payload: false});
+		// store.dispatch({type: "SET_RELATION", payload: false});
+		store.dispatch(route.actions.setRelation(false));
 
 		// add new emptyNode
 		const newEmptyNode = this.graph.addNode(new EmptyNode());

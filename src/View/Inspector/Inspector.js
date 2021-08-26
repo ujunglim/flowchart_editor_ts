@@ -4,7 +4,7 @@ import "antd/dist/antd.css";
 import { DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { connect } from "react-redux";
-import store from "../../Redux/reducer";
+import store, { route } from "../../Redux/reducer";
 
 const { SubMenu } = Menu;
 
@@ -23,10 +23,12 @@ function Inspector(props) {
 	const onChangeInput = (value) => {
 		// compare previous routeNum, current routeNum
 		if(routeNum < value) {
-			store.dispatch({type: "PLUS"});
+			// store.dispatch({type: "PLUS"});
+			store.dispatch(route.actions.plus());
 		}
 		else if(routeNum > value) {
-			store.dispatch({type: "MINUS"});
+			// store.dispatch({type: "MINUS"});
+			store.dispatch(route.actions.minus());
 		}
 		routeNum = value;
 	}
@@ -65,7 +67,7 @@ function Inspector(props) {
 						<SubMenu key="sub_route" title="路线" icon={<DownOutlined />}>
 							<Menu.Item key="route">
 								线路数:
-								<InputNumber min={2} defaultValue={2} onChange={onChangeInput}/>
+								<InputNumber min={2} defaultValue={store.getState().routeNum} onChange={onChangeInput}/>
 							</Menu.Item>
 						</SubMenu>
 					

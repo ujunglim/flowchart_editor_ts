@@ -1,34 +1,36 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
-import { createStore } from "redux";
+// import { createAction, createReducer } from "@reduxjs/toolkit";
+// import { createStore } from "redux";
 
-const initialState = {
-	routeNum: 2,
-	setRelation: false
-};
+import { combineReducers, createSlice, createStore } from "@reduxjs/toolkit";
 
-// Action creators
-const plus = createAction("PLUS");
-const minus = createAction("MINUS");
-const reset = createAction("RESET");
-const setRelation = createAction("SET_RELATION");
+// const initialState = {
+// 	routeNum: 2,
+// 	setRelation: false
+// };
 
-// reducer
-const reducer = (state = initialState, action) => {
-	switch(action.type) {
-		case plus.type:
-			// console.log('+');
-			return {routeNum: state.routeNum + 1, action: "plus", setRelation: true}
-		case minus.type:
-			// console.log('-')
-			return {routeNum: state.routeNum - 1, action: "minus", setRelation: true}
-		case reset.type:
-			return {routeNum: 2, action: 'reset'}
-		case setRelation.type:
-			return {routeNum: state.routeNum, setRelation: action.payload}
-		default:
-			return state;
-	}
-}
+// // Action creators
+// const plus = createAction("PLUS");
+// const minus = createAction("MINUS");
+// const reset = createAction("RESET");
+// const setRelation = createAction("SET_RELATION");
+
+// // reducer
+// const reducer = (state = initialState, action) => {
+// 	switch(action.type) {
+// 		case plus.type:
+// 			// console.log('+');
+// 			return {routeNum: state.routeNum + 1, action: "plus", setRelation: true}
+// 		case minus.type:
+// 			// console.log('-')
+// 			return {routeNum: state.routeNum - 1, action: "minus", setRelation: true}
+// 		case reset.type:
+// 			return {routeNum: 2, action: 'reset'}
+// 		case setRelation.type:
+// 			return {routeNum: state.routeNum, setRelation: action.payload}
+// 		default:
+// 			return state;
+// 	}
+// }
 
 
 // // reducer with builder callback object notation
@@ -43,6 +45,10 @@ const reducer = (state = initialState, action) => {
 // 			state.routeNum--;
 // 			state.action = "minus";
 // 			state.setRelation = true;
+// 		})
+// 		.addCase(reset, (state, action) => {
+// 			state.routeNum = 2;
+// 			state.action = "reset";
 // 		})
 // 		.addCase(setRelation, (state, {payload}) => {
 // 			state.setRelation = payload;
@@ -62,11 +68,52 @@ const reducer = (state = initialState, action) => {
 // 		state.action = "minus";
 // 		state.setRelation = true;
 // 	},
+// 	[reset]: (state, action) => {
+// 		state.routeNum = 2;
+// 		state.action = "reset";
+// 	},
 // 	[setRelation] : (state, {payload}) => {
 // 		state.setRelation = payload;
 // 	}
 // })
 
-// create store
-const store = createStore(reducer);
+// // create store
+// const store = createStore(reducer);
+// export default store;
+
+//==========================================================
+
+const route = createSlice({
+	name: 'routeReducer',
+	initialState: {
+		routeNum: 2,
+		setRelation: false
+	},
+	reducers: {
+		plus: (state, action) => {
+			console.log('+')
+			return {routeNum: state.routeNum + 1, action: "plus", setRelation: true}
+		},
+		minus: (state, action) => {
+			console.log('-')
+			return {routeNum: state.routeNum - 1, action: "minus", setRelation: true}
+		},
+		reset: (state, action) => {
+			return {routeNum: 2, action: 'reset'}
+		},
+		setRelation: (state, {payload}) => {
+			return {routeNum: state.routeNum, setRelation: payload}
+		}
+	}
+
+})
+
+// const reducer = combineReducers({
+// 	route: route.reducer
+// })
+
+const store = createStore(route.reducer);
+
+export {route};
 export default store;
+
