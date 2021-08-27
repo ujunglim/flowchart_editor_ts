@@ -1,4 +1,4 @@
-import { createSlice, createStore } from "@reduxjs/toolkit";
+import { configureStore, createSlice, createStore } from "@reduxjs/toolkit";
 
 const routeSlice = createSlice({
 	name: 'route',
@@ -27,7 +27,8 @@ const routeSlice = createSlice({
 // 	route: routeSlice.reducer
 // })
 
-const store = createStore(routeSlice.reducer);
+// const store = createStore(routeSlice.reducer);
+const store = configureStore({reducer: routeSlice.reducer});
 
 export {routeSlice};
 export default store;
