@@ -4,7 +4,7 @@ import "antd/dist/antd.css";
 import { DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { connect } from "react-redux";
-import store, { route } from "../../Redux/reducer";
+import store, { routeSlice } from "../../Redux/store";
 
 const { SubMenu } = Menu;
 
@@ -23,12 +23,10 @@ function Inspector(props) {
 	const onChangeInput = (value) => {
 		// compare previous routeNum, current routeNum
 		if(routeNum < value) {
-			store.dispatch({type: "PLUS"});
-			// store.dispatch(route.actions.plus());
+			store.dispatch(routeSlice.actions.plus());
 		}
 		else if(routeNum > value) {
-			store.dispatch({type: "MINUS"});
-			// store.dispatch(route.actions.minus());
+			store.dispatch(routeSlice.actions.minus());
 		}
 		routeNum = value;
 	}

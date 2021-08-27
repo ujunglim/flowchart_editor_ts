@@ -1,4 +1,4 @@
-import store, { route } from "../Redux/reducer";
+import store, { routeSlice } from "../Redux/store";
 import { EmptyNode, EmptyParallelNode } from "../View/Graph/EmptyNode";
 import { PolygonFinishNode, PolygonStartNode } from "../View/Graph/PolygonNode";
 import ServiceNode from '../View/Graph/ServiceNode';
@@ -93,8 +93,7 @@ class Interaction {
 			this.graph.trigger('AddParallelService', serviceNode);
 
 			// close relation setting panel
-			// store.dispatch({type: "SET_RELATION", payload: false});
-			store.dispatch(route.actions.setRelation(false));
+			store.dispatch(routeSlice.actions.setRelation(false));
 		}
 
 		// remove empty node
@@ -103,8 +102,7 @@ class Interaction {
 
 	addParallelNode(oldNode) {
 		// open relation setting panel
-		// store.dispatch({type: "SET_RELATION", payload: true});
-		store.dispatch(route.actions.setRelation(true));
+		store.dispatch(routeSlice.actions.setRelation(true));
 
 		// container node is invisible
 		this.containerNode = this.graph.addNode({
@@ -296,13 +294,11 @@ class Interaction {
 
 	deleteParalleleNode(startNode, finishNode) {
 		// reset routeNum
-		// store.dispatch({type: "RESET"});
-		store.dispatch(route.actions.reset());
+		store.dispatch(routeSlice.actions.reset());
 
 
 		// close relation setting panel
-		// store.dispatch({type: "SET_RELATION", payload: false});
-		store.dispatch(route.actions.setRelation(false));
+		store.dispatch(routeSlice.actions.setRelation(false));
 
 		// add new emptyNode
 		const newEmptyNode = this.graph.addNode(new EmptyNode());
