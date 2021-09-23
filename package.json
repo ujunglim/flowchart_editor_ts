@@ -22,6 +22,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "startl": "PORT=80 react-scripts start",
     "eject": "react-scripts eject",
     "deploy": "gh-pages -d build",
     "predeploy": "npm run build",
