@@ -18,7 +18,7 @@ export default function GraphComp({ graphRef }) {
         nodeMovable: false
       },
       scroller: {
-        enabled: true,
+        // enabled: true,
         // pageVisible: true,
         // pageBreak: true,
       },
