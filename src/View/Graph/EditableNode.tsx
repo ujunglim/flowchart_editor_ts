@@ -3,17 +3,26 @@ import { Button } from 'antd';
 import { useRef } from 'react';
 import styled from 'styled-components';
 
-export default function EditableNode({onDelete, children}) {
-  const deleteRef = useRef();
+type Props = {
+  onDelete?: any,
+  children: any
+}
+
+export default function EditableNode({onDelete, children}: Props) {
+  const deleteRef = useRef<HTMLButtonElement>(null);
 
   const onMouseEnter = () => {
     // console.log("enter");
-    deleteRef.current.style.display = "block";    
+    if(deleteRef.current) {
+      deleteRef.current.style.display = "block";
+    }
   }
   
   const onMouseLeave = () => {
     // console.log("leave");
-    deleteRef.current.style.display = "none";
+    if(deleteRef.current) {
+      deleteRef.current.style.display = "none";
+    }
   }
 
   return (

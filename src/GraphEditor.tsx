@@ -8,14 +8,19 @@ import StencilComp from "./View/Stencil/StencilComp";
 
 const GRAPH_1 = "GRAPH_1";
 
-export default function GraphEditor({relations, services}) {
+type Props = {
+  relations: string[],
+  services: string[]
+}
+
+export default function GraphEditor({relations, services}: Props) {
   const [Portal, setPortalGraph] = usePortal(GRAPH_1);
   const graphRef = useRef(null);
   const stencilRef = useRef(null);
 
   useEffect(() => {
     GraphInitialize(graphRef.current);
-    setPortalGraph(graphRef.current);
+    // setPortalGraph(graphRef.current);
   }, [Portal]);
 
   return (
