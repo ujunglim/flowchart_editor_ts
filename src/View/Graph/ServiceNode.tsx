@@ -2,7 +2,15 @@ import styled from 'styled-components';
 import EditableNode from './EditableNode';
 
 export default class ServiceNode {
-  constructor(emptyNode, title, onDelete) {
+  public width: number;
+	public height: number;
+	public x: number;
+	public y: number;
+	public shape: string;
+	public id: string;
+	public component: any;
+
+  constructor(emptyNode: any, title: string, onDelete: any) {
     const {x, y} = emptyNode.position();
     const {width} = emptyNode.size();
 
@@ -12,7 +20,7 @@ export default class ServiceNode {
     this.x = x + (width - this.width)/2;
     this.y = y;
     this.id = `${emptyNode.id}_Service`;
-    this.component = (node) => (
+    this.component = (node: any) => (
       <EditableNode onDelete={() => onDelete(node)}>
         <SNode>{title}</SNode>
       </EditableNode> 

@@ -13,7 +13,7 @@ const nodeSetting = {
   }
 };
 
-export default function GraphInitialize(graph) {
+export default function GraphInitialize(graph: any) {
   const source = graph.addNode({
     ...nodeSetting,
     x: 350,
@@ -80,7 +80,7 @@ export default function GraphInitialize(graph) {
     target
   });
 
-  graph.on("node:click", ({ node }) => {
+  graph.on("node:click", ({ node }: any) => {
     // click plus
     if (node.id === "plus") {
       // remove edge_init
