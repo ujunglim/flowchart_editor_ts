@@ -51,5 +51,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://ujunglim.github.io/flowchart_editor"
+  "homepage": "https://ujunglim.github.io/flowchart_editor",
+  "devDependencies": {
+    "@types/styled-components": "^5.1.15"
+  }
 }

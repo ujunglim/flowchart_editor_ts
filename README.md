@@ -23,9 +23,9 @@ Add TS to project
 npm install --save typescript @types/node @types/react @types/react-dom @types/jest
 ```
 
-Add tsconfig.json
+index.js change to .tsx
+restart server  
+
 ```
-npx tsc --init
+npm i --save-dev @types/styled-components
 ```
-1. Change the file extension to .tsx
-2. Add the type annotation
