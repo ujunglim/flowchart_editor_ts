@@ -2,13 +2,13 @@ import EditableNode from "./EditableNode";
 import Polygon from "./Polygon";
 
 export class PolygonStartNode {
-	public width: number;
-	public height: number;
-	public x: number;
-	public y: number;
-	public shape: string;
-	public id: string;
-	public component: any;
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	shape: string;
+	id: string;
+	component: any;
 
 	constructor(emptyNode: any, onDelete: any) {
 		const {x, y} = emptyNode.position();
@@ -29,13 +29,13 @@ export class PolygonStartNode {
 }
 
 export class PolygonFinishNode {
-	public width: number;
-	public height: number;
-	public x: number;
-	public y: number;
-	public shape: string;
-	public id: string;
-	public component: any;
+	width: number;
+	height: number;
+	x: number;
+	y: number;
+	shape: string;
+	id: string;
+	component: any;
 
 	constructor(emptyNode: any) {
 		const {x, y} = emptyNode.position();

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import StencilGroup_base from "./StencilGroup_base";
 
 export default class StencilGroup_relation extends StencilGroup_base {
-  constructor(relations) {
+  constructor(relations: string[]) {
     super();
     this.titles = relations;
     this.groupName = "关系节点";

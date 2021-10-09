@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import EditableNode from './EditableNode';
-//sdf
+
 export default class ServiceNode {
-  public width: number;
-	public height: number;
-	public x: number;
-	public y: number;
-	public shape: string;
-	public id: string;
-	public component: any;
+  width: number;
+	height: number;
+	x: number;
+	y: number;
+	shape: string;
+	id: string;
+	component: any;
 
   constructor(emptyNode: any, title: string, onDelete: any) {
     const {x, y} = emptyNode.position();

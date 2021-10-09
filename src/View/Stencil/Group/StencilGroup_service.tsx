@@ -2,7 +2,7 @@ import styled from "styled-components";
 import StencilGroup_base from "./StencilGroup_base";
 
 export default class StencilGroup_service extends StencilGroup_base {
-  constructor(services) {
+  constructor(services: string[]) {
     super();
     this.titles = services;
     this.groupName = "讯飞服务";

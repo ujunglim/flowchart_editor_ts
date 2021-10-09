@@ -5,8 +5,15 @@ import interaction from "../../Interaction/Interaction";
 import StencilGroup_relation from "./Group/StencilGroup_relation";
 import StencilGroup_service from "./Group/StencilGroup_service";
 
-export default function StencilComp({ graphRef, stencilRef, relations, services }) {
-  const container = useRef(null);
+type Props = {
+  graphRef: any,
+  stencilRef: any,
+  relations: string[],
+  services: string[],
+}
+
+export default function StencilComp({ graphRef, stencilRef, relations, services }: Props) {
+  const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if(!graphRef.current) {
@@ -50,7 +57,9 @@ export default function StencilComp({ graphRef, stencilRef, relations, services 
     });
 
     stencilRef.current = stencil;
-    container.current.appendChild(stencil.container);
+    if(container.current) {
+      container.current.appendChild(stencil.container);
+    }
 
     // add service, relation group to stencil
     const serviceGroup = new StencilGroup_service(services);
