@@ -4,7 +4,7 @@ const routeSlice = createSlice({
 	name: 'route',
 	initialState: {
 		routeNum: 2,
-		setRelation: false
+		setRelation: false,
 	},
 	reducers: {
 		plus: (state, action) => {
@@ -13,9 +13,9 @@ const routeSlice = createSlice({
 		minus: (state, action) => {
 			return {routeNum: state.routeNum - 1, action: "minus", setRelation: true}
 		},
-		reset: (state, action) => {
-			return {routeNum: 2, action: 'reset'}
-		},
+		// reset: (state, action) => {
+		// 	return {routeNum: 2, action: 'reset'}
+		// },
 		setRelation: (state, {payload}) => {
 			return {routeNum: state.routeNum, setRelation: payload}
 		}
@@ -29,7 +29,7 @@ const routeSlice = createSlice({
 
 // const store = createStore(routeSlice.reducer);
 const store = configureStore({reducer: routeSlice.reducer});
-export const {plus, minus, setRelation} = routeSlice.actions;
 
+export const {plus, minus, setRelation} = routeSlice.actions;
 export {routeSlice};
 export default store;
